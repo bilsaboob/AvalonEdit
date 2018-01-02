@@ -43,7 +43,7 @@ namespace ICSharpCode.Text.Document
 	/// <inheritdoc cref="VerifyAccess"/>
 	/// <para>However, there is a single method that is thread-safe: <see cref="CreateSnapshot()"/> (and its overloads).</para>
 	/// </remarks>
-	public sealed class TextDocument : IDocument, INotifyPropertyChanged
+	public class TextDocument : IDocument, INotifyPropertyChanged
 	{
 		#region Thread ownership
 		readonly object lockObject = new object();
