@@ -19,7 +19,7 @@
 using System;
 using NUnit.Framework;
 
-namespace ICSharpCode.AvalonEdit.Document
+namespace ICSharpCode.Text.Document
 {
 	public class UndoStackTests
 	{

@@ -24,11 +24,12 @@ using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Threading;
 
-using ICSharpCode.AvalonEdit.Document;
+using ICSharpCode.Text.Document;
 using ICSharpCode.AvalonEdit.Editing;
 using ICSharpCode.AvalonEdit.Rendering;
 using ICSharpCode.AvalonEdit.Utils;
 using ICSharpCode.NRefactory.Editor;
+using ICSharpCode.Text.Utils;
 
 namespace ICSharpCode.AvalonEdit.CodeCompletion
 {

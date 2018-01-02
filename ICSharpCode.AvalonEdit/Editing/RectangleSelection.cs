@@ -25,9 +25,11 @@ using System.Windows;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media.TextFormatting;
-using ICSharpCode.AvalonEdit.Document;
+using ICSharpCode.Text.Document;
 using ICSharpCode.AvalonEdit.Rendering;
 using ICSharpCode.AvalonEdit.Utils;
+using ICSharpCode.Text.Utils;
+
 #if NREFACTORY
 using ICSharpCode.NRefactory;
 using ICSharpCode.NRefactory.Editor;

@@ -25,6 +25,7 @@ using System.Xml;
 using System.Xml.Schema;
 
 using ICSharpCode.AvalonEdit.Utils;
+using ICSharpCode.Text.Utils;
 
 namespace ICSharpCode.AvalonEdit.Highlighting.Xshd
 {

@@ -17,6 +17,7 @@
 // DEALINGS IN THE SOFTWARE.
 
 using System;
+using ICSharpCode.Text.Utils;
 using NUnit.Framework;
 
 namespace ICSharpCode.AvalonEdit.Utils

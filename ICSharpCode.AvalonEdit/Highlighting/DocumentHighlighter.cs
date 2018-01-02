@@ -21,9 +21,10 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using ICSharpCode.NRefactory.Editor;
-using ICSharpCode.AvalonEdit.Document;
+using ICSharpCode.Text.Document;
 using ICSharpCode.AvalonEdit.Utils;
-using SpanStack = ICSharpCode.AvalonEdit.Utils.ImmutableStack<ICSharpCode.AvalonEdit.Highlighting.HighlightingSpan>;
+using ICSharpCode.Text.Utils;
+using SpanStack = ICSharpCode.Text.Utils.ImmutableStack<ICSharpCode.AvalonEdit.Highlighting.HighlightingSpan>;
 
 namespace ICSharpCode.AvalonEdit.Highlighting
 {
@@ -144,7 +145,7 @@ namespace ICSharpCode.AvalonEdit.Highlighting
 		ImmutableStack<HighlightingSpan> initialSpanStack = SpanStack.Empty;
 		
 		/// <summary>
-		/// Gets/sets the the initial span stack of the document. Default value is <see cref="SpanStack.Empty" />.
+		/// Gets/sets the the initial span stack of the document. Default value is <see cref="Empty{T}" />.
 		/// </summary>
 		public ImmutableStack<HighlightingSpan> InitialSpanStack {
 			get { return initialSpanStack; }

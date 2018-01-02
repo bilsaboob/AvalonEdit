@@ -29,12 +29,13 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Threading;
-using ICSharpCode.AvalonEdit.Document;
+using ICSharpCode.Text.Document;
 using ICSharpCode.AvalonEdit.Indentation;
 using ICSharpCode.AvalonEdit.Rendering;
 using ICSharpCode.AvalonEdit.Utils;
 using ICSharpCode.NRefactory;
 using ICSharpCode.NRefactory.Editor;
+using ICSharpCode.Text.Utils;
 
 namespace ICSharpCode.AvalonEdit.Editing
 {

@@ -22,7 +22,7 @@ using System.Linq;
 using System.Text;
 using System.Xml;
 
-using ICSharpCode.AvalonEdit.Document;
+using ICSharpCode.Text.Document;
 
 namespace ICSharpCode.AvalonEdit.Folding
 {

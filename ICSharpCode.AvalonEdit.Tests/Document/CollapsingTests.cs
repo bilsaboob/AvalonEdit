@@ -20,7 +20,7 @@ using System;
 using ICSharpCode.AvalonEdit.Rendering;
 using NUnit.Framework;
 
-namespace ICSharpCode.AvalonEdit.Document
+namespace ICSharpCode.Text.Document
 {
 	[TestFixture]
 	public class CollapsingTests

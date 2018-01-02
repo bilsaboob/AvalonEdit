@@ -20,8 +20,10 @@ using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 
-using ICSharpCode.AvalonEdit.Document;
+using ICSharpCode.Text.Document;
 using ICSharpCode.AvalonEdit.Utils;
+using ICSharpCode.Text.Utils;
+
 #if NREFACTORY
 using ICSharpCode.NRefactory;
 using ICSharpCode.NRefactory.Editor;

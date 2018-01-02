@@ -20,6 +20,7 @@ using System;
 using System.IO;
 using NUnit.Framework;
 using System.Text;
+using ICSharpCode.Text.Document;
 
 namespace ICSharpCode.AvalonEdit.Utils
 {

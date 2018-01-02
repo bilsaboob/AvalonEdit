@@ -18,8 +18,10 @@
 
 using System;
 using System.Collections.Generic;
-using ICSharpCode.AvalonEdit.Document;
+using ICSharpCode.Text.Document;
 using ICSharpCode.AvalonEdit.Utils;
+using ICSharpCode.Text.Utils;
+
 #if NREFACTORY
 using ICSharpCode.NRefactory.Editor;
 #endif

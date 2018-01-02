@@ -20,6 +20,7 @@ using System;
 using System.Windows;
 using System.Windows.Controls;
 using ICSharpCode.AvalonEdit.Utils;
+using ICSharpCode.Text.Utils;
 
 namespace ICSharpCode.AvalonEdit.CodeCompletion
 {
