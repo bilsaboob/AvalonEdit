@@ -22,7 +22,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Documents;
-using ICSharpCode.AvalonEdit.Document;
+using ICSharpCode.Text.Document;
 using ICSharpCode.NRefactory.Editor;
 
 namespace ICSharpCode.AvalonEdit.Highlighting

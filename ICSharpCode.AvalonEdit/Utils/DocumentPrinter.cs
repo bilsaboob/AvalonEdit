@@ -22,7 +22,7 @@ using System.Windows;
 using System.Windows.Documents;
 
 using ICSharpCode.NRefactory.Editor;
-using ICSharpCode.AvalonEdit.Document;
+using ICSharpCode.Text.Document;
 using ICSharpCode.AvalonEdit.Highlighting;
 
 namespace ICSharpCode.AvalonEdit.Utils

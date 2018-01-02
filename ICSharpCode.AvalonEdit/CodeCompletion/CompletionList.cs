@@ -27,6 +27,7 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Linq;
 using ICSharpCode.AvalonEdit.Utils;
+using ICSharpCode.Text.Utils;
 
 namespace ICSharpCode.AvalonEdit.CodeCompletion
 {

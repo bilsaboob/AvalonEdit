@@ -22,6 +22,7 @@ using System.Security;
 using System.Windows;
 using System.Windows.Interop;
 using System.Windows.Media;
+using ICSharpCode.Text.Utils;
 
 namespace ICSharpCode.AvalonEdit.Utils
 {

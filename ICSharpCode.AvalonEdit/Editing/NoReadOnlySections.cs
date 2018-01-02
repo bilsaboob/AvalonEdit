@@ -19,9 +19,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using ICSharpCode.AvalonEdit.Document;
+using ICSharpCode.Text.Document;
 using ICSharpCode.NRefactory.Editor;
 using ICSharpCode.AvalonEdit.Utils;
+using ICSharpCode.Text.Utils;
 
 namespace ICSharpCode.AvalonEdit.Editing
 {

@@ -20,7 +20,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 
-using ICSharpCode.AvalonEdit.Document;
+using ICSharpCode.Text.Document;
 
 namespace ICSharpCode.AvalonEdit.Rendering
 {

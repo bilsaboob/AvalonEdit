@@ -19,7 +19,7 @@
 using System;
 using System.Windows.Automation.Provider;
 using System.Windows.Documents;
-using ICSharpCode.AvalonEdit.Document;
+using ICSharpCode.Text.Document;
 using System.Windows.Automation.Text;
 using System.Diagnostics;
 

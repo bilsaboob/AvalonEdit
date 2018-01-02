@@ -27,7 +27,8 @@ using System.Diagnostics;
 using System.Windows;
 using System.Windows.Documents;
 using System.Windows.Media.TextFormatting;
-using ICSharpCode.AvalonEdit.Document;
+using ICSharpCode.Text.Document;
+using ICSharpCode.Text.Utils;
 
 namespace ICSharpCode.AvalonEdit.Rendering
 {

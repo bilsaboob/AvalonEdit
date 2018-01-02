@@ -22,10 +22,11 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 
-using ICSharpCode.AvalonEdit.Document;
+using ICSharpCode.Text.Document;
 using ICSharpCode.AvalonEdit.Editing;
 using ICSharpCode.AvalonEdit.Rendering;
 using ICSharpCode.AvalonEdit.Utils;
+using ICSharpCode.Text.Utils;
 
 namespace ICSharpCode.AvalonEdit.Folding
 {

@@ -18,7 +18,7 @@
 
 using System;
 using ICSharpCode.NRefactory.Editor;
-using ICSharpCode.AvalonEdit.Document;
+using ICSharpCode.Text.Document;
 
 namespace ICSharpCode.AvalonEdit.Indentation
 {

@@ -18,6 +18,7 @@
 
 using System;
 using System.Linq;
+using ICSharpCode.Text.Utils;
 using NUnit.Framework;
 
 namespace ICSharpCode.AvalonEdit.Utils

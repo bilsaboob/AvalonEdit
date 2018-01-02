@@ -19,7 +19,7 @@
 using System;
 using System.Globalization;
 using ICSharpCode.NRefactory;
-using ICSharpCode.AvalonEdit.Document;
+using ICSharpCode.Text.Document;
 
 namespace ICSharpCode.AvalonEdit
 {

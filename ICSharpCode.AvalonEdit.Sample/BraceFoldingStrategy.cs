@@ -18,7 +18,7 @@
 
 using System;
 using System.Collections.Generic;
-using ICSharpCode.AvalonEdit.Document;
+using ICSharpCode.Text.Document;
 using ICSharpCode.AvalonEdit.Folding;
 #if NREFACTORY
 using ICSharpCode.NRefactory.Editor;

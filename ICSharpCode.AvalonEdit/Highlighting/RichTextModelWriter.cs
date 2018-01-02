@@ -21,7 +21,7 @@ using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Media;
 using ICSharpCode.NRefactory.Editor;
-using ICSharpCode.AvalonEdit.Document;
+using ICSharpCode.Text.Document;
 using ICSharpCode.AvalonEdit.Utils;
 
 namespace ICSharpCode.AvalonEdit.Highlighting

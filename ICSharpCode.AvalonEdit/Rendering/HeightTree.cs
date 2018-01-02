@@ -21,8 +21,9 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
 
-using ICSharpCode.AvalonEdit.Document;
+using ICSharpCode.Text.Document;
 using ICSharpCode.AvalonEdit.Utils;
+using ICSharpCode.Text.Utils;
 
 namespace ICSharpCode.AvalonEdit.Rendering
 {

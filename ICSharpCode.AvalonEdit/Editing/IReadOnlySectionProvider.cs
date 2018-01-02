@@ -21,7 +21,7 @@ using System.Collections.Generic;
 #if NREFACTORY
 using ICSharpCode.NRefactory.Editor;
 #else
-using ICSharpCode.AvalonEdit.Document;
+using ICSharpCode.Text.Document;
 #endif
 
 namespace ICSharpCode.AvalonEdit.Editing

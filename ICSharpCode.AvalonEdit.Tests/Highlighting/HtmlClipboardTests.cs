@@ -18,7 +18,7 @@
 
 using System;
 using System.Windows;
-using ICSharpCode.AvalonEdit.Document;
+using ICSharpCode.Text.Document;
 using NUnit.Framework;
 
 namespace ICSharpCode.AvalonEdit.Highlighting

@@ -23,7 +23,7 @@ using ICSharpCode.NRefactory.Editor;
 #endif
 using NUnit.Framework;
 
-namespace ICSharpCode.AvalonEdit.Document
+namespace ICSharpCode.Text.Document
 {
 	[TestFixture]
 	public class ChangeTrackingTest

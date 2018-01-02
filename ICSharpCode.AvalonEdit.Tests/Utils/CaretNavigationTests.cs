@@ -18,7 +18,7 @@
 
 using System;
 using System.Windows.Documents;
-using ICSharpCode.AvalonEdit.Document;
+using ICSharpCode.Text.Document;
 #if NREFACTORY
 using ICSharpCode.NRefactory.Editor;
 #endif
