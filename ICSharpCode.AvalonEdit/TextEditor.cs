@@ -226,6 +226,7 @@ namespace ICSharpCode.AvalonEdit
 		#endregion
 		
 		#region Text property
+
 		/// <summary>
 		/// Gets/Sets the text of the current document.
 		/// </summary>

@@ -48,6 +48,21 @@ namespace ICSharpCode.Text.Document
 		#region Thread ownership
 		readonly object lockObject = new object();
 		Thread owner = Thread.CurrentThread;
+		private bool _verifyAccess = true;
+
+		public void UnsafeAccess(Action action)
+		{
+			var prevVerifyAccess = _verifyAccess;
+			try
+			{
+				_verifyAccess = false;
+				action();
+			}
+			finally
+			{
+				_verifyAccess = prevVerifyAccess;
+			}
+		}
 		
 		/// <summary>
 		/// Verifies that the current thread is the documents owner thread.
@@ -60,6 +75,7 @@ namespace ICSharpCode.Text.Document
 		/// </remarks>
 		public void VerifyAccess()
 		{
+			if (!_verifyAccess) return;
 			if (Thread.CurrentThread != owner)
 				throw new InvalidOperationException("TextDocument can be accessed only from the thread that owns it.");
 		}
@@ -81,9 +97,9 @@ namespace ICSharpCode.Text.Document
 			// We need to lock here to ensure that in the null owner case,
 			// only one thread succeeds in taking ownership.
 			lock (lockObject) {
-				if (owner != null) {
+				/*if (owner != null) {
 					VerifyAccess();
-				}
+				}*/
 				owner = newOwner;
 			}
 		}

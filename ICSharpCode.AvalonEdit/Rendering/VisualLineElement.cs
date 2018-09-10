@@ -245,21 +245,21 @@ namespace ICSharpCode.AvalonEdit.Rendering
 		/// <summary>
 		/// Queries the cursor over the visual line element.
 		/// </summary>
-		protected internal virtual void OnQueryCursor(QueryCursorEventArgs e)
+		public virtual void OnQueryCursor(QueryCursorEventArgs e)
 		{
 		}
 		
 		/// <summary>
 		/// Allows the visual line element to handle a mouse event.
 		/// </summary>
-		protected internal virtual void OnMouseDown(MouseButtonEventArgs e)
+		public virtual void OnMouseDown(MouseButtonEventArgs e)
 		{
 		}
 		
 		/// <summary>
 		/// Allows the visual line element to handle a mouse event.
 		/// </summary>
-		protected internal virtual void OnMouseUp(MouseButtonEventArgs e)
+		public virtual void OnMouseUp(MouseButtonEventArgs e)
 		{
 		}
 	}

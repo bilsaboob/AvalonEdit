@@ -85,7 +85,7 @@ namespace ICSharpCode.AvalonEdit.Rendering
 		}
 		
 		/// <inheritdoc/>
-		protected internal override void OnQueryCursor(QueryCursorEventArgs e)
+		public override void OnQueryCursor(QueryCursorEventArgs e)
 		{
 			if (LinkIsClickable()) {
 				e.Handled = true;
@@ -96,7 +96,7 @@ namespace ICSharpCode.AvalonEdit.Rendering
 		/// <inheritdoc/>
 		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes",
 		                                                 Justification = "I've seen Process.Start throw undocumented exceptions when the mail client / web browser is installed incorrectly")]
-		protected internal override void OnMouseDown(MouseButtonEventArgs e)
+		public override void OnMouseDown(MouseButtonEventArgs e)
 		{
 			if (e.ChangedButton == MouseButton.Left && !e.Handled && LinkIsClickable()) {
 				RequestNavigateEventArgs args = new RequestNavigateEventArgs(this.NavigateUri, this.TargetName);

@@ -163,7 +163,7 @@ namespace ICSharpCode.AvalonEdit.Folding
 				return new FoldingLineTextRun(this, this.TextRunProperties) { textBrush = textBrush };
 			}
 			
-			protected internal override void OnMouseDown(MouseButtonEventArgs e)
+			public override void OnMouseDown(MouseButtonEventArgs e)
 			{
 				if (e.ClickCount == 2 && e.ChangedButton == MouseButton.Left) {
 					fs.IsFolded = false;
