@@ -129,7 +129,7 @@ namespace ICSharpCode.AvalonEdit
 		/// <summary>
 		/// Raises the <see cref="DocumentChanged"/> event.
 		/// </summary>
-		protected virtual void OnDocumentChanged(EventArgs e)
+		protected virtual void OnDocumentChanged(DocumentChangedEventArgs e)
 		{
 			if (DocumentChanged != null) {
 				DocumentChanged(this, e);
@@ -152,11 +152,13 @@ namespace ICSharpCode.AvalonEdit
 				TextDocumentWeakEventManager.TextChanged.AddListener(newValue, this);
 				PropertyChangedEventManager.AddListener(newValue.UndoStack, this, "IsOriginalFile");
 			}
-			OnDocumentChanged(EventArgs.Empty);
+
+			OnDocumentChanged(new DocumentChangedEventArgs(oldValue, newValue));
 			OnTextChanged(EventArgs.Empty);
 		}
-		#endregion
 		
+		#endregion
+
 		#region Options property
 		/// <summary>
 		/// Options property.
@@ -1169,5 +1171,17 @@ namespace ICSharpCode.AvalonEdit
 				}
 			}
 		}
+	}
+
+	public class DocumentChangedEventArgs : EventArgs
+	{
+		public DocumentChangedEventArgs(TextDocument oldValue, TextDocument newValue)
+		{
+			OldDocument = oldValue;
+			NewDocument = newValue;
+		}
+
+		public TextDocument OldDocument { get; }
+		public TextDocument NewDocument { get; }
 	}
 }

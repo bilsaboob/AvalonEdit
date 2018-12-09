@@ -17,6 +17,7 @@
 // DEALINGS IN THE SOFTWARE.
 
 using System;
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.TextFormatting;
@@ -25,12 +26,14 @@ namespace ICSharpCode.AvalonEdit.Rendering
 {
 	sealed class GlobalTextRunProperties : TextRunProperties
 	{
+		private Dictionary<string, object> _properties = new Dictionary<string, object>();
+
 		internal Typeface typeface;
 		internal double fontRenderingEmSize;
 		internal Brush foregroundBrush;
 		internal Brush backgroundBrush;
 		internal System.Globalization.CultureInfo cultureInfo;
-		
+
 		public override Typeface Typeface { get { return typeface; } }
 		public override double FontRenderingEmSize { get { return fontRenderingEmSize; } }
 		public override double FontHintingEmSize { get { return fontRenderingEmSize; } }
@@ -39,5 +42,82 @@ namespace ICSharpCode.AvalonEdit.Rendering
 		public override Brush BackgroundBrush { get { return backgroundBrush; } }
 		public override System.Globalization.CultureInfo CultureInfo { get { return cultureInfo; } }
 		public override TextEffectCollection TextEffects { get { return null; } }
+
+		public T GetValue<T>(string key)
+		{
+			if (!_properties.TryGetValue(key, out var value)) return default(T);
+
+			try
+			{
+				return (T)value;
+			}
+			catch (Exception)
+			{
+				return default(T);
+			}
+		}
+
+		public bool TryGetValue<T>(string key, out T value)
+		{
+			object objValue;
+			if (!_properties.TryGetValue(key, out objValue))
+			{
+				value = default(T);
+				return false;
+			}
+
+			try
+			{
+				value = (T)objValue;
+				return true;
+			}
+			catch (Exception)
+			{
+				value = default(T);
+				return false;
+			}
+		}
+
+		public void SetValue<T>(string key, T value)
+		{
+			_properties[key] = value;
+		}
+	}
+
+	public static class TextRunPropertiesExtensions
+	{
+		public static T GetValueOrDefault<T>(this TextRunProperties p, string key, Func<T> defaultValue)
+		{
+			if (p is GlobalTextRunProperties gp)
+			{
+				if (!gp.TryGetValue<T>(key, out var value))
+				{
+					value = defaultValue();
+					p.SetValue(key, value);
+				}
+
+				return value;
+			}
+
+			return default(T);
+		}
+
+		public static T GetValue<T>(this TextRunProperties p, string key)
+		{
+			if (p is GlobalTextRunProperties gp)
+			{
+				return gp.GetValue<T>(key);
+			}
+
+			return default(T);
+		}
+
+		public static void SetValue<T>(this TextRunProperties p, string key, T value)
+		{
+			if (p is GlobalTextRunProperties gp)
+			{
+				gp.SetValue<T>(key, value);
+			}
+		}
 	}
 }

@@ -171,6 +171,7 @@
       <DependentUpon>DocumentLine.cs</DependentUpon>
     </Compile>
     <Compile Include="Document\TextDocument.cs" />
+    <Compile Include="TextRange.cs" />
     <Compile Include="Utils\CallbackOnDispose.cs" />
     <Compile Include="Document\Text\CharRope.cs" />
     <Compile Include="Utils\CompressingTreeList.cs" />

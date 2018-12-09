@@ -35,6 +35,7 @@ using ICSharpCode.NRefactory.Editor;
 using ICSharpCode.Text.Document;
 using ICSharpCode.AvalonEdit.Utils;
 using ICSharpCode.Text.Utils;
+using Rapid.Language.Text;
 
 namespace ICSharpCode.AvalonEdit.Rendering
 {
@@ -440,7 +441,48 @@ namespace ICSharpCode.AvalonEdit.Rendering
 			else
 				return layers[index - inlineObjects.Count];
 		}
-		
+
+		public TextRange GetVisualRange()
+		{
+			if (!VisualLinesValid)
+			{
+				if (Dispatcher.CheckAccess())
+				{
+					EnsureVisualLines();
+				}
+				else
+				{
+					Dispatcher.Invoke(() => EnsureVisualLines());
+				}
+
+				if (!VisualLinesValid)
+					return TextRange.Empty;
+			}
+
+			//get the visual lines and return the visual range
+			var visualLines = VisualLines;
+			var start = 0;
+			var end = 0;
+
+			if (visualLines.Count == 0)
+			{
+				return TextRange.Empty;
+			}
+			else if (visualLines.Count == 1)
+			{
+				var firstDocLine = visualLines[0].FirstDocumentLine;
+				start = firstDocLine.Offset;
+				end = firstDocLine.EndOffset;
+			}
+			else
+			{
+				start = visualLines[0].FirstDocumentLine.Offset;
+				end = visualLines[visualLines.Count - 1].LastDocumentLine.EndOffset;
+			}
+
+			return new TextRange(start, end);
+		}
+
 		/// <inheritdoc/>
 		protected override System.Collections.IEnumerator LogicalChildren {
 			get {
@@ -859,7 +901,9 @@ namespace ICSharpCode.AvalonEdit.Rendering
 		/// This event may be used to mark visual lines as invalid that would otherwise be reused.
 		/// </summary>
 		public event EventHandler<VisualLineConstructionStartEventArgs> VisualLineConstructionStarting;
-		
+
+		public event EventHandler<VisualLineConstructionStartEventArgs> VisualLineConstructionFinished;
+
 		/// <summary>
 		/// Occurs when the TextView was measured and changed its visual lines.
 		/// </summary>
@@ -984,10 +1028,14 @@ namespace ICSharpCode.AvalonEdit.Rendering
 			Debug.Assert(clippedPixelsOnTop >= -ExtensionMethods.Epsilon);
 			
 			newVisualLines = new List<VisualLine>();
-			
-			if (VisualLineConstructionStarting != null)
-				VisualLineConstructionStarting(this, new VisualLineConstructionStartEventArgs(firstLineInView));
-			
+
+			var constructionEventArgs = new VisualLineConstructionStartEventArgs(Guid.NewGuid(), firstLineInView);
+			VisualLineConstructionStarting?.Invoke(this, constructionEventArgs);
+
+#if DEBUG
+			var sw = Stopwatch.StartNew();
+#endif
+
 			var elementGeneratorsArray = elementGenerators.ToArray();
 			var lineTransformersArray = lineTransformers.ToArray();
 			var nextLine = firstLineInView;
@@ -1023,10 +1071,17 @@ namespace ICSharpCode.AvalonEdit.Rendering
 			}
 			
 			allVisualLines = newVisualLines;
+			
+#if DEBUG
+			Debug.WriteLine($"Generated VisualLines {newVisualLines.Count} - {sw.ElapsedMilliseconds}ms");
+#endif
+
 			// visibleVisualLines = readonly copy of visual lines
 			visibleVisualLines = new ReadOnlyCollection<VisualLine>(newVisualLines.ToArray());
 			newVisualLines = null;
-			
+
+			VisualLineConstructionFinished?.Invoke(this, constructionEventArgs);
+
 			if (allVisualLines.Any(line => line.IsDisposed)) {
 				throw new InvalidOperationException("A visual line was disposed even though it is still in use.\n" +
 				                                    "This can happen when Redraw() is called during measure for lines " +

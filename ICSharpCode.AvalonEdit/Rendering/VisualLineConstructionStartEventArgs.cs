@@ -30,15 +30,18 @@ namespace ICSharpCode.AvalonEdit.Rendering
 		/// Gets/Sets the first line that is visible in the TextView.
 		/// </summary>
 		public DocumentLine FirstLineInView { get; private set; }
-		
+
+		public Guid Id { get; private set; }
+
 		/// <summary>
 		/// Creates a new VisualLineConstructionStartEventArgs instance.
 		/// </summary>
-		public VisualLineConstructionStartEventArgs(DocumentLine firstLineInView)
+		public VisualLineConstructionStartEventArgs(Guid id, DocumentLine firstLineInView)
 		{
 			if (firstLineInView == null)
 				throw new ArgumentNullException("firstLineInView");
 			this.FirstLineInView = firstLineInView;
+			this.Id = id;
 		}
 	}
 }

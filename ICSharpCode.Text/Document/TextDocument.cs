@@ -48,7 +48,7 @@ namespace ICSharpCode.Text.Document
 		#region Thread ownership
 		readonly object lockObject = new object();
 		Thread owner = Thread.CurrentThread;
-		private bool _verifyAccess = true;
+		protected bool _verifyAccess = true;
 
 		public void UnsafeAccess(Action action)
 		{
@@ -262,7 +262,23 @@ namespace ICSharpCode.Text.Document
 				Replace(0, rope.Length, value);
 			}
 		}
-		
+
+		public string TextUnsafe
+		{
+			get
+			{
+				try
+				{
+					_verifyAccess = false;
+					return Text;
+				}
+				finally
+				{
+					_verifyAccess = true;
+				}
+			}
+		}
+
 		/// <summary>
 		/// This event is called after a group of changes is completed.
 		/// </summary>
