@@ -3,12 +3,10 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.Contracts;
 using System.Globalization;
-using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
-using System.Threading.Tasks;
 
-namespace Rapid.Language.Text
+namespace ICSharpCode.Text
 {
     /// <summary>Represents a range in a plaintext document.</summary>
     [DebuggerDisplay("Range = ({StartOffset}:{EndOffset}), Length = {Length}")]

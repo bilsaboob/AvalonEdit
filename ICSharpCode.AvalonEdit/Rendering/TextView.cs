@@ -34,8 +34,8 @@ using System.Windows.Threading;
 using ICSharpCode.NRefactory.Editor;
 using ICSharpCode.Text.Document;
 using ICSharpCode.AvalonEdit.Utils;
+using ICSharpCode.Text;
 using ICSharpCode.Text.Utils;
-using Rapid.Language.Text;
 
 namespace ICSharpCode.AvalonEdit.Rendering
 {
