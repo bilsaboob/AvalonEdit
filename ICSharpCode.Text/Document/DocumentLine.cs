@@ -63,7 +63,7 @@ namespace ICSharpCode.Text.Document
 		void DebugVerifyAccess()
 		{
 			#if DEBUG
-			document.DebugVerifyAccess();
+			//document.DebugVerifyAccess();
 			#endif
 		}
 		#endregion

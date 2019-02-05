@@ -189,5 +189,6 @@
     <Compile Include="Utils\WeakEventManagerBase.cs" />
     <Compile Include="Utils\ThrowUtil.cs" />
     <CodeAnalysisDictionary Include="Properties\CodeAnalysisDictionary.xml" />
+    <Compile Include="ZenPadTextAssembly.cs" />
   </ItemGroup>
 </Project>

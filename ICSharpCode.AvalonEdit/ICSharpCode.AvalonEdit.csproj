@@ -397,9 +397,9 @@
     <EmbeddedResource Include="Highlighting\Resources\TSQL-Mode.xshd" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ICSharpCode.Text\ICSharpCode.Text.csproj">
+    <ProjectReference Include="..\ICSharpCode.Text\ZenPad.Text.csproj">
       <Project>{4654024b-2acd-4c1e-9251-a0e34dbb26d9}</Project>
-      <Name>ICSharpCode.Text</Name>
+      <Name>ZenPad.Text</Name>
     </ProjectReference>
   </ItemGroup>
 </Project>
