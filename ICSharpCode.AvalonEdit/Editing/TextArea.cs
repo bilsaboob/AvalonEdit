@@ -657,16 +657,30 @@ namespace ICSharpCode.AvalonEdit.Editing
 		#endregion
 		
 		#region IScrollInfo implementation
-		ScrollViewer scrollOwner;
+		private bool _scrollOwnerChanged;
+		ScrollViewer _scrollOwner;
+		private ScrollViewer scrollOwner
+		{
+			get => _scrollOwner;
+			set
+			{
+				if (_scrollOwner != value)
+				{
+					_scrollOwnerChanged = true;
+					_scrollOwner = value;
+				}
+			}
+		}
+
 		bool canVerticallyScroll, canHorizontallyScroll;
 		
 		void ApplyScrollInfo()
 		{
-			if (scrollInfo != null) {
+			if (scrollInfo != null && (_scrollOwnerChanged || (scrollOwner != null && scrollInfo.ScrollOwner != scrollOwner))) {
 				scrollInfo.ScrollOwner = scrollOwner;
 				scrollInfo.CanVerticallyScroll = canVerticallyScroll;
 				scrollInfo.CanHorizontallyScroll = canHorizontallyScroll;
-				scrollOwner = null;
+				_scrollOwnerChanged = false;
 			}
 		}
 		
