@@ -95,6 +95,8 @@ namespace ICSharpCode.AvalonEdit.Editing
 			this.ActiveInputHandler = this.DefaultInputHandler;
 		}
 		#endregion
+
+		public bool IsSelectionEnabled { get; set; } = true;
 		
 		#region InputHandler management
 		/// <summary>
@@ -225,7 +227,7 @@ namespace ICSharpCode.AvalonEdit.Editing
 			}
 			// Reset caret location and selection: this is necessary because the caret/selection might be invalid
 			// in the new document (e.g. if new document is shorter than the old document).
-			caret.Location = new TextLocation(1, 1);
+			caret.UpdateLocation(new TextLocation(1, 1), CaretPositionChangedSource.Input);
 			this.ClearSelection();
 			if (DocumentChanged != null)
 				DocumentChanged(this, EventArgs.Empty);
@@ -352,7 +354,7 @@ namespace ICSharpCode.AvalonEdit.Editing
 			{
 				TextArea textArea = (TextArea)textAreaReference.Target;
 				if (textArea != null) {
-					textArea.Caret.Position = caretPosition;
+					textArea.Caret.UpdatePosition(caretPosition, CaretPositionChangedSource.UndoRedoInput);
 					textArea.Selection = selection;
 				}
 			}

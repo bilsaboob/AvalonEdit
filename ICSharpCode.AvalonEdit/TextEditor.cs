@@ -243,7 +243,7 @@ namespace ICSharpCode.AvalonEdit
 				document.Text = value ?? string.Empty;
 				// after replacing the full text, the caret is positioned at the end of the document
 				// - reset it to the beginning.
-				this.CaretOffset = 0;
+				this.UpdateCaretOffset(0, CaretPositionChangedSource.Input);
 				document.UndoStack.ClearAll();
 			}
 		}
@@ -852,9 +852,11 @@ namespace ICSharpCode.AvalonEdit
 			get {
 				return textArea.Caret.Offset;
 			}
-			set {
-				textArea.Caret.Offset = value;
-			}
+		}
+
+		public void UpdateCaretOffset(int offset, CaretPositionChangedSource changedSource)
+		{
+			textArea.Caret.UpdateOffset(offset, changedSource);
 		}
 		
 		/// <summary>
@@ -900,7 +902,7 @@ namespace ICSharpCode.AvalonEdit
 			if (length < 0 || start + length > documentLength)
 				throw new ArgumentOutOfRangeException("length", length, "Value must be between 0 and " + (documentLength - start));
 			textArea.Selection = SimpleSelection.Create(textArea, start, start + length);
-			textArea.Caret.Offset = start + length;
+			textArea.Caret.UpdateOffset(start + length, CaretPositionChangedSource.Selection);
 		}
 		
 		/// <summary>

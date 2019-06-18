@@ -179,7 +179,7 @@ namespace ICSharpCode.AvalonEdit.Editing
 				SimpleSegment currentSeg = GetTextLineSegment(e);
 				if (currentSeg == SimpleSegment.Invalid)
 					return;
-				textArea.Caret.Offset = currentSeg.Offset + currentSeg.Length;
+				textArea.Caret.UpdateOffset(currentSeg.Offset + currentSeg.Length, CaretPositionChangedSource.Mouse);
 				if (CaptureMouse()) {
 					selecting = true;
 					selectionStart = new AnchorSegment(Document, currentSeg.Offset, currentSeg.Length);
@@ -220,10 +220,10 @@ namespace ICSharpCode.AvalonEdit.Editing
 		void ExtendSelection(SimpleSegment currentSeg)
 		{
 			if (currentSeg.Offset < selectionStart.Offset) {
-				textArea.Caret.Offset = currentSeg.Offset;
+				textArea.Caret.UpdateOffset(currentSeg.Offset, CaretPositionChangedSource.Selection);
 				textArea.Selection = Selection.Create(textArea, currentSeg.Offset, selectionStart.Offset + selectionStart.Length);
 			} else {
-				textArea.Caret.Offset = currentSeg.Offset + currentSeg.Length;
+				textArea.Caret.UpdateOffset(currentSeg.Offset + currentSeg.Length, CaretPositionChangedSource.Selection);
 				textArea.Selection = Selection.Create(textArea, selectionStart.Offset, currentSeg.Offset + currentSeg.Length);
 			}
 		}

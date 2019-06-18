@@ -337,7 +337,8 @@ namespace ICSharpCode.AvalonEdit.Editing
 					pos = new TextViewPosition(document.GetLocation(editOffset + firstInsertionLength));
 					textArea.ClearSelection();
 				}
-				textArea.Caret.Position = textArea.TextView.GetPosition(new Point(GetXPos(textArea, pos), textArea.TextView.GetVisualTopByDocumentLine(Math.Max(startLine, endLine)))).GetValueOrDefault();
+				var newPos = textArea.TextView.GetPosition(new Point(GetXPos(textArea, pos), textArea.TextView.GetVisualTopByDocumentLine(Math.Max(startLine, endLine)))).GetValueOrDefault();
+				textArea.Caret.UpdatePosition(newPos, CaretPositionChangedSource.ReplaceInput);
 			}
 		}
 		

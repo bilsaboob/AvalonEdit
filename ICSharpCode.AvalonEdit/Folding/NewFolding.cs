@@ -28,7 +28,7 @@ namespace ICSharpCode.AvalonEdit.Folding
 	/// <summary>
 	/// Helper class used for <see cref="FoldingManager.UpdateFoldings"/>.
 	/// </summary>
-	public class NewFolding : ISegment
+	public class NewFolding : ISegment, IFoldingSection
 	{
 		/// <summary>
 		/// Gets/Sets the start offset.
@@ -82,6 +82,12 @@ namespace ICSharpCode.AvalonEdit.Folding
 		
 		int ISegment.Length {
 			get { return this.EndOffset - this.StartOffset; }
+		}
+
+		public bool IsFolded
+		{
+			get => DefaultClosed;
+			set => DefaultClosed = value;
 		}
 	}
 }

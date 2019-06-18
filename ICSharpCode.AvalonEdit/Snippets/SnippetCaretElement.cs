@@ -18,6 +18,7 @@
 
 using System;
 using System.Runtime.Serialization;
+using ICSharpCode.AvalonEdit.Editing;
 using ICSharpCode.NRefactory.Editor;
 using ICSharpCode.Text.Document;
 
@@ -65,7 +66,7 @@ namespace ICSharpCode.AvalonEdit.Snippets
 			pos.SurviveDeletion = true;
 			context.Deactivated += (sender, e) => {
 				if (e.Reason == DeactivateReason.ReturnPressed || e.Reason == DeactivateReason.NoActiveElements) {
-					context.TextArea.Caret.Offset = pos.Offset;
+					context.TextArea.Caret.UpdateOffset(pos.Offset, CaretPositionChangedSource.Input);
 				}
 			};
 		}

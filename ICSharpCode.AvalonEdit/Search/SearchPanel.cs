@@ -367,7 +367,7 @@ namespace ICSharpCode.AvalonEdit.Search
 
 		void SelectResult(SearchResult result)
 		{
-			textArea.Caret.Offset = result.StartOffset;
+			textArea.Caret.UpdateOffset(result.StartOffset, CaretPositionChangedSource.Selection);
 			textArea.Selection = Selection.Create(textArea, result.StartOffset, result.EndOffset);
 			textArea.Caret.BringCaretToView();
 			// show caret even if the editor does not have the Keyboard Focus

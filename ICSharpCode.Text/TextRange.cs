@@ -614,7 +614,13 @@ namespace ICSharpCode.Text
 
     public static class TextRangeEx
     {
-        
+	    [Pure]
+		public static TextRange ToTextRange(this int offset, int len = 1)
+	    {
+			if(offset == -1) return TextRange.Empty;
+			return new TextRange(offset, offset + len);
+	    }
+
         [Pure]
         public static string Substring( this string str, TextRange range)
         {

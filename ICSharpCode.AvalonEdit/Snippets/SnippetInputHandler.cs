@@ -68,7 +68,7 @@ namespace ICSharpCode.AvalonEdit.Snippets
 		{
 			if (element != null) {
 				TextArea.Selection = Selection.Create(TextArea, element.Segment);
-				TextArea.Caret.Offset = element.Segment.EndOffset;
+				TextArea.Caret.UpdateOffset(element.Segment.EndOffset, CaretPositionChangedSource.Selection);
 			}
 		}
 		

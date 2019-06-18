@@ -77,12 +77,12 @@ namespace ICSharpCode.AvalonEdit.Editing
 						if (string.IsNullOrEmpty(newText)) {
 							// place caret at the beginning of the selection
 							if (start.CompareTo(end) <= 0)
-								textArea.Caret.Position = start;
+								textArea.Caret.UpdatePosition(start, CaretPositionChangedSource.ReplaceInput);
 							else
-								textArea.Caret.Position = end;
+								textArea.Caret.UpdatePosition(end, CaretPositionChangedSource.ReplaceInput);
 						} else {
 							// place caret so that it ends up behind the new text
-							textArea.Caret.Offset = segmentsToDelete[i].EndOffset;
+							textArea.Caret.UpdateOffset(segmentsToDelete[i].EndOffset, CaretPositionChangedSource.ReplaceInput);
 						}
 						textArea.Document.Replace(segmentsToDelete[i], newText);
 					} else {

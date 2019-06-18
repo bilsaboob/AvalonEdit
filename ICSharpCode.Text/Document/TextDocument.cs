@@ -24,6 +24,7 @@ using System.ComponentModel.Design;
 using System.Diagnostics;
 using System.Globalization;
 using System.Threading;
+using System.Threading.Tasks;
 using ICSharpCode.Text.Document;
 using ICSharpCode.Text.IO;
 using ICSharpCode.Text.IO;
@@ -975,7 +976,16 @@ namespace ICSharpCode.Text.Document
 			}
 			return lineTree.GetByOffset(offset);
 		}
-		
+
+		public DocumentLine GetLineByOffsetUnsafe(int offset)
+		{
+			if (offset < 0 || offset > rope.Length)
+			{
+				throw new ArgumentOutOfRangeException("offset", offset, "0 <= offset <= " + rope.Length.ToString());
+			}
+			return lineTree.GetByOffset(offset);
+		}
+
 		IDocumentLine IDocument.GetLineByOffset(int offset)
 		{
 			return GetLineByOffset(offset);

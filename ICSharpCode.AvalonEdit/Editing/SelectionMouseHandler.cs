@@ -170,7 +170,8 @@ namespace ICSharpCode.AvalonEdit.Editing
 				bool isAtEndOfLine;
 				int offset = GetOffsetFromMousePosition(e.GetPosition(textArea.TextView), out visualColumn, out isAtEndOfLine);
 				if (offset >= 0) {
-					textArea.Caret.Position = new TextViewPosition(textArea.Document.GetLocation(offset), visualColumn) { IsAtEndOfLine = isAtEndOfLine };
+					var newPos = new TextViewPosition(textArea.Document.GetLocation(offset), visualColumn) { IsAtEndOfLine = isAtEndOfLine };
+					textArea.Caret.UpdatePosition(newPos, CaretPositionChangedSource.MouseSelection);
 					textArea.Caret.DesiredXPos = double.NaN;
 					if (textArea.ReadOnlySectionProvider.CanInsert(offset)) {
 						if ((e.AllowedEffects & DragDropEffects.Move) == DragDropEffects.Move
@@ -329,7 +330,7 @@ namespace ICSharpCode.AvalonEdit.Editing
 				}
 				if (resultEffect == DragDropEffects.None) {
 					// reset caret if drag was aborted
-					textArea.Caret.Position = oldCaretPosition;
+					textArea.Caret.UpdatePosition(oldCaretPosition, CaretPositionChangedSource.MouseSelection);
 				}
 			}
 			
@@ -615,13 +616,19 @@ namespace ICSharpCode.AvalonEdit.Editing
 				offset = offset.CoerceValue(allowedSegment.Offset, allowedSegment.EndOffset);
 			}
 			if (offset >= 0) {
-				textArea.Caret.Position = new TextViewPosition(textArea.Document.GetLocation(offset), visualColumn) { IsAtEndOfLine = isAtEndOfLine };
+				textArea.Caret.UpdatePosition(new TextViewPosition(textArea.Document.GetLocation(offset), visualColumn) { IsAtEndOfLine = isAtEndOfLine }, CaretPositionChangedSource.Mouse);
 				textArea.Caret.DesiredXPos = double.NaN;
 			}
 		}
 		
 		void ExtendSelectionToMouse(MouseEventArgs e)
 		{
+			if (!textArea.IsSelectionEnabled)
+			{
+				mode = MouseSelectionMode.None;
+				return;
+			}
+
 			TextViewPosition oldPosition = textArea.Caret.Position;
 			if (mode == MouseSelectionMode.Normal || mode == MouseSelectionMode.Rectangular) {
 				SetCaretOffsetToMousePosition(e);
@@ -639,9 +646,9 @@ namespace ICSharpCode.AvalonEdit.Editing
 					                                      Math.Max(newWord.EndOffset, startWord.EndOffset));
 					// moves caret to start or end of selection
 					if( newWord.Offset < startWord.Offset) 
-						textArea.Caret.Offset = newWord.Offset;
+						textArea.Caret.UpdateOffset(newWord.Offset, CaretPositionChangedSource.Selection);
 					else 
-						textArea.Caret.Offset = Math.Max(newWord.EndOffset, startWord.EndOffset);
+						textArea.Caret.UpdateOffset(Math.Max(newWord.EndOffset, startWord.EndOffset), CaretPositionChangedSource.Selection);
 				}
 			}
 			textArea.Caret.BringCaretToView(5.0);
@@ -651,6 +658,11 @@ namespace ICSharpCode.AvalonEdit.Editing
 		#region MouseLeftButtonUp
 		void textArea_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
 		{
+			if (!textArea.IsSelectionEnabled)
+			{
+				mode = MouseSelectionMode.None;
+				return;
+			}
 			if (mode == MouseSelectionMode.None || e.Handled)
 				return;
 			e.Handled = true;

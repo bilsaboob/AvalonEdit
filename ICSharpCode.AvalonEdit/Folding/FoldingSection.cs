@@ -29,10 +29,15 @@ using ICSharpCode.Text.Utils;
 
 namespace ICSharpCode.AvalonEdit.Folding
 {
+	public interface IFoldingSection : ISegment
+	{
+		bool IsFolded { get; set; }
+	}
+
 	/// <summary>
 	/// A section that can be folded.
 	/// </summary>
-	public sealed class FoldingSection : TextSegment
+	public sealed class FoldingSection : TextSegment, IFoldingSection
 	{
 		readonly FoldingManager manager;
 		bool isFolded;

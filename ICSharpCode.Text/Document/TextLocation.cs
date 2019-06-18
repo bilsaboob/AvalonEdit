@@ -266,6 +266,11 @@ namespace ICSharpCode.Text.Document
 		{
 			return segment != null && thisSegment.Offset <= segment.Offset && segment.EndOffset <= thisSegment.EndOffset;
 		}
+
+		public static bool Contains(this ISegment thisSegment, int offset)
+		{
+			return thisSegment != null && offset >= thisSegment.Offset && offset <= thisSegment.EndOffset;
+		}
 	}
 	#endif
 }

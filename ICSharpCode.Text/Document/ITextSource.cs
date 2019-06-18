@@ -216,7 +216,46 @@ namespace ICSharpCode.Text.Document
 		/// <exception cref="ArgumentException">Raised if 'other' belongs to a different document than this checkpoint.</exception>
 		int MoveOffsetTo(ITextSourceVersion other, int oldOffset, AnchorMovementType movement = AnchorMovementType.Default);
 	}
-	
+
+	public static class TextSourceExtensions
+	{
+		public static TextRange MoveOffsetsToByAge(this ITextSourceVersion textSource, ITextSourceVersion other, TextRange textRange, AnchorMovementType startMovement = AnchorMovementType.Default, AnchorMovementType endMovement = AnchorMovementType.Default)
+		{
+			if (textSource == null || other == null || textRange.IsEmpty) return textRange;
+
+			var newStartOffset = textSource.MoveOffsetToByAge(other, textRange.StartOffset, startMovement);
+			var newEndOffset = textSource.MoveOffsetToByAge(other, textRange.EndOffset, endMovement);
+
+			return new TextRange(newStartOffset, newEndOffset);
+		}
+
+		public static int MoveOffsetToByAge(this ITextSourceVersion textSource, ITextSourceVersion other, int offset, AnchorMovementType movement = AnchorMovementType.Default)
+		{
+			if (textSource == null || other == null) return offset;
+			if (!other.BelongsToSameDocumentAs(textSource)) return offset;
+
+			// get the correct from / to version
+			var fromVersion = textSource;
+			var toVersion = other;
+
+			var ageDiff = fromVersion.CompareAge(toVersion);
+
+			if (ageDiff == 0)
+				return offset;
+
+			if (ageDiff > 0)
+			{
+				var tmp = fromVersion;
+				fromVersion = toVersion;
+				toVersion = tmp;
+			}
+
+			offset = fromVersion.MoveOffsetTo(toVersion, offset);
+
+			return offset;
+		}
+	}
+
 	/// <summary>
 	/// Implements the ITextSource interface using a string.
 	/// </summary>

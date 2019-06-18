@@ -36,6 +36,68 @@ using ICSharpCode.NRefactory.Editor;
 
 namespace ICSharpCode.AvalonEdit.Editing
 {
+	public enum CaretPositionChangedSource
+	{
+		Unknown,
+		Mouse, // moved due to mouse click
+		MouseSelection, // moved due to selection with mouse
+		UndoRedoInput, // moved due to text input
+		Input, // moved due to text input
+		Selection,
+		VisualColumnChange,
+		ReplaceInput, // moved due to text replacement
+		KeyNavigation, // moved due to key navigation
+		KeyNavigationSelection, // moved due to key navigation with selecting text
+	}
+
+	public class CaretPositionChangedEventArgs : EventArgs
+	{
+		public bool Handled { get; set; }
+		public CaretPositionChangedSource Source { get; set; }
+	}
+
+	public static class CaretPositionChangedSourceExtensions
+	{
+		public static bool IsNavigation(this CaretPositionChangedSource changedSource) => changedSource.IsKeyNavigation() || changedSource.IsMouseNavigation();
+
+		public static bool IsMouseNavigation(this CaretPositionChangedSource changedSource)
+		{
+			switch (changedSource)
+			{
+				case CaretPositionChangedSource.Mouse:
+				case CaretPositionChangedSource.MouseSelection:
+					return true;
+			}
+
+			return false;
+		}
+
+		public static bool IsKeyNavigation(this CaretPositionChangedSource changedSource)
+		{
+			switch (changedSource)
+			{
+				case CaretPositionChangedSource.KeyNavigation:
+				case CaretPositionChangedSource.KeyNavigationSelection:
+					return true;
+			}
+
+			return false;
+		}
+		
+		public static bool IsInputChange(this CaretPositionChangedSource changedSource)
+		{
+			switch (changedSource)
+			{
+				case CaretPositionChangedSource.UndoRedoInput:
+				case CaretPositionChangedSource.Input:
+				case CaretPositionChangedSource.ReplaceInput:
+					return true;
+			}
+
+			return false;
+		}
+	}
+
 	/// <summary>
 	/// Helper class with caret-related methods.
 	/// </summary>
@@ -96,21 +158,43 @@ namespace ICSharpCode.AvalonEdit.Editing
 				ValidateVisualColumn();
 				return position;
 			}
-			set {
-				if (position != value) {
-					position = value;
-					
-					storedCaretOffset = -1;
-					
-					//Debug.WriteLine("Caret position changing to " + value);
-					
-					ValidatePosition();
-					InvalidateVisualColumn();
-					RaisePositionChanged();
-					Log("Caret position changed to " + value);
-					if (visible)
-						Show();
-				}
+		}
+
+		public void UpdatePosition(TextViewPosition newPosition)
+		{
+			if (position != newPosition)
+			{
+				position = newPosition;
+
+				storedCaretOffset = -1;
+
+				//Debug.WriteLine("Caret position changing to " + value);
+
+				ValidatePosition();
+				InvalidateVisualColumn();
+				RaisePositionChangedExt(CaretPositionChangedSource.Unknown);
+				Log("Caret position changed to " + newPosition);
+				if (visible)
+					Show();
+			}
+		}
+
+		public void UpdatePosition(TextViewPosition newPosition, CaretPositionChangedSource changedSource)
+		{
+			if (position != newPosition)
+			{
+				position = newPosition;
+
+				storedCaretOffset = -1;
+
+				//Debug.WriteLine("Caret position changing to " + value);
+
+				ValidatePosition();
+				InvalidateVisualColumn();
+				RaisePositionChangedExt(changedSource);
+				Log("Caret position changed to " + newPosition);
+				if (visible)
+					Show();
 			}
 		}
 		
@@ -132,9 +216,11 @@ namespace ICSharpCode.AvalonEdit.Editing
 			get {
 				return position.Location;
 			}
-			set {
-				this.Position = new TextViewPosition(value);
-			}
+		}
+
+		public void UpdateLocation(TextLocation location, CaretPositionChangedSource changedSource)
+		{
+			UpdatePosition(new TextViewPosition(location), changedSource);
 		}
 		
 		/// <summary>
@@ -142,9 +228,11 @@ namespace ICSharpCode.AvalonEdit.Editing
 		/// </summary>
 		public int Line {
 			get { return position.Line; }
-			set {
-				this.Position = new TextViewPosition(value, position.Column);
-			}
+		}
+
+		public void UpdateLine(int line, CaretPositionChangedSource changedSource)
+		{
+			UpdatePosition(new TextViewPosition(line, position.Column), changedSource);
 		}
 		
 		/// <summary>
@@ -152,9 +240,11 @@ namespace ICSharpCode.AvalonEdit.Editing
 		/// </summary>
 		public int Column {
 			get { return position.Column; }
-			set {
-				this.Position = new TextViewPosition(position.Line, value);
-			}
+		}
+
+		public void UpdateColumn(int column, CaretPositionChangedSource changedSource)
+		{
+			UpdatePosition(new TextViewPosition(position.Line, column), changedSource);
 		}
 		
 		/// <summary>
@@ -165,9 +255,11 @@ namespace ICSharpCode.AvalonEdit.Editing
 				ValidateVisualColumn();
 				return position.VisualColumn;
 			}
-			set {
-				this.Position = new TextViewPosition(position.Line, position.Column, value);
-			}
+		}
+
+		public void UpdateVisualColumn(int visualColumn, CaretPositionChangedSource changedSource)
+		{
+			UpdatePosition(new TextViewPosition(position.Line, position.Column, visualColumn), changedSource);
 		}
 		
 		bool isInVirtualSpace;
@@ -205,7 +297,7 @@ namespace ICSharpCode.AvalonEdit.Editing
 				TextDocument document = textArea.Document;
 				if (document != null) {
 					// keep visual column
-					this.Position = new TextViewPosition(document.GetLocation(newCaretOffset), position.VisualColumn);
+					UpdatePosition(new TextViewPosition(document.GetLocation(newCaretOffset), position.VisualColumn), CaretPositionChangedSource.Input);
 				}
 			}
 			storedCaretOffset = -1;
@@ -224,12 +316,15 @@ namespace ICSharpCode.AvalonEdit.Editing
 					return document.GetOffset(position.Location);
 				}
 			}
-			set {
-				TextDocument document = textArea.Document;
-				if (document != null) {
-					this.Position = new TextViewPosition(document.GetLocation(value));
-					this.DesiredXPos = double.NaN;
-				}
+		}
+
+		public void UpdateOffset(int offset, CaretPositionChangedSource changedSource)
+		{
+			TextDocument document = textArea.Document;
+			if (document != null)
+			{
+				UpdatePosition(new TextViewPosition(document.GetLocation(offset)), changedSource);
+				this.DesiredXPos = double.NaN;
 			}
 		}
 		
@@ -272,9 +367,38 @@ namespace ICSharpCode.AvalonEdit.Editing
 		/// the PositionChanged event is raised only once at the end of the document update.
 		/// </summary>
 		public event EventHandler PositionChanged;
-		
+		public event EventHandler<CaretPositionChangedEventArgs> PositionChangedExt;
+
 		bool raisePositionChangedOnUpdateFinished;
-		
+		bool raisePositionChangedExtOnUpdateFinished;
+		CaretPositionChangedSource caretPositionChangedSource;
+
+		void RaisePositionChangedExt(CaretPositionChangedSource changeSource)
+		{
+			if (textArea.Document != null && textArea.Document.IsInUpdate) {
+				raisePositionChangedExtOnUpdateFinished = true;
+				caretPositionChangedSource = changeSource;
+			} else {
+				if (PositionChangedExt != null || PositionChanged != null)
+				{
+					CaretPositionChangedEventArgs args = null;
+					if (PositionChangedExt != null)
+					{
+						args = new CaretPositionChangedEventArgs() { Source = changeSource };
+						PositionChangedExt(this, args);
+					}
+					
+					if (PositionChanged != null)
+					{
+						if (args == null || !args.Handled)
+						{
+							PositionChanged(this, EventArgs.Empty);
+						}
+					}
+				}
+			}
+		}
+
 		void RaisePositionChanged()
 		{
 			if (textArea.Document != null && textArea.Document.IsInUpdate) {
@@ -291,6 +415,13 @@ namespace ICSharpCode.AvalonEdit.Editing
 			if (raisePositionChangedOnUpdateFinished) {
 				if (PositionChanged != null) {
 					PositionChanged(this, EventArgs.Empty);
+				}
+			}
+
+			if (raisePositionChangedExtOnUpdateFinished)
+			{
+				if (PositionChangedExt != null) {
+					PositionChangedExt(this, new CaretPositionChangedEventArgs() { Source = caretPositionChangedSource });
 				}
 			}
 		}
@@ -372,7 +503,7 @@ namespace ICSharpCode.AvalonEdit.Editing
 						newOffset = newOffsetForwards;
 					}
 				}
-				this.Position = new TextViewPosition(textView.Document.GetLocation(newOffset), newVisualColumn);
+				UpdatePosition(new TextViewPosition(textView.Document.GetLocation(newOffset), newVisualColumn), CaretPositionChangedSource.Unknown);
 			}
 			isInVirtualSpace = (position.VisualColumn > visualLine.VisualLength);
 		}

@@ -86,7 +86,7 @@ namespace ICSharpCode.AvalonEdit.Editing
 					textArea.Document.Insert(textArea.Caret.Offset, newText);
 				}
 			}
-			textArea.Caret.VisualColumn = -1;
+			textArea.Caret.UpdateVisualColumn(-1, CaretPositionChangedSource.VisualColumnChange);
 		}
 		
 		public override int Length {

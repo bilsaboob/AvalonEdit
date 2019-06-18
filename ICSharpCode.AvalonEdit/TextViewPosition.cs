@@ -28,9 +28,13 @@ namespace ICSharpCode.AvalonEdit
 	/// </summary>
 	public struct TextViewPosition : IEquatable<TextViewPosition>, IComparable<TextViewPosition>
 	{
+		public static readonly TextViewPosition Empty = new TextViewPosition(-1, -1, -1);
+		
 		int line, column, visualColumn;
 		bool isAtEndOfLine;
-		
+
+		public bool IsEmpty => line == -1 && column == -1 && visualColumn == -1;
+
 		/// <summary>
 		/// Gets/Sets Location.
 		/// </summary>
