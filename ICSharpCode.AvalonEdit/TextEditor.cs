@@ -17,6 +17,7 @@
 // DEALINGS IN THE SOFTWARE.
 
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
@@ -894,7 +895,7 @@ namespace ICSharpCode.AvalonEdit
 		/// <summary>
 		/// Selects the specified text section.
 		/// </summary>
-		public void Select(int start, int length)
+		public void Select(int start, int length, CaretPositionChangedSource source = CaretPositionChangedSource.Selection)
 		{
 			int documentLength = Document != null ? Document.TextLength : 0;
 			if (start < 0 || start > documentLength)
@@ -902,7 +903,7 @@ namespace ICSharpCode.AvalonEdit
 			if (length < 0 || start + length > documentLength)
 				throw new ArgumentOutOfRangeException("length", length, "Value must be between 0 and " + (documentLength - start));
 			textArea.Selection = SimpleSelection.Create(textArea, start, start + length);
-			textArea.Caret.UpdateOffset(start + length, CaretPositionChangedSource.Selection);
+			textArea.Caret.UpdateOffset(start + length, source);
 		}
 		
 		/// <summary>

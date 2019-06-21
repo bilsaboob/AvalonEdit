@@ -44,6 +44,7 @@ namespace ICSharpCode.AvalonEdit.Editing
 		UndoRedoInput, // moved due to text input
 		Input, // moved due to text input
 		Selection,
+		SelectionByUserCode,
 		VisualColumnChange,
 		ReplaceInput, // moved due to text replacement
 		KeyNavigation, // moved due to key navigation

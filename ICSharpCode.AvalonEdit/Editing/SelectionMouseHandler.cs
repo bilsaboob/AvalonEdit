@@ -29,6 +29,7 @@ using System.Windows.Threading;
 using ICSharpCode.Text.Document;
 using ICSharpCode.AvalonEdit.Rendering;
 using ICSharpCode.AvalonEdit.Utils;
+using ICSharpCode.Text;
 using ICSharpCode.Text.Utils;
 
 #if NREFACTORY
@@ -628,16 +629,68 @@ namespace ICSharpCode.AvalonEdit.Editing
 				mode = MouseSelectionMode.None;
 				return;
 			}
-
+			
 			TextViewPosition oldPosition = textArea.Caret.Position;
+			
 			if (mode == MouseSelectionMode.Normal || mode == MouseSelectionMode.Rectangular) {
-				SetCaretOffsetToMousePosition(e);
-				if (mode == MouseSelectionMode.Normal && textArea.Selection is RectangleSelection)
-					textArea.Selection = new SimpleSelection(textArea, oldPosition, textArea.Caret.Position);
-				else if (mode == MouseSelectionMode.Rectangular && !(textArea.Selection is RectangleSelection))
-					textArea.Selection = new RectangleSelection(textArea, oldPosition, textArea.Caret.Position);
-				else
-					textArea.Selection = textArea.Selection.StartSelectionOrSetEndpoint(oldPosition, textArea.Caret.Position);
+				SetCaretOffsetToMousePosition(e, textArea.AllowedSelectionRange.ToSegmentOrNull());
+
+				var fromPos = oldPosition;
+				var toPos = textArea.Caret.Position;
+
+				var allowSelection = true;
+				if (!textArea.AllowedSelectionRange.IsEmpty)
+				{
+					var swappedPos = false;
+					if (fromPos.CompareTo(toPos) > 0)
+					{
+						var tmp = fromPos;
+						fromPos = toPos;
+						toPos = tmp;
+						swappedPos = true;
+					}
+					
+					var allowedStartLoc = textArea.TextView.Document.GetLocation(textArea.AllowedSelectionRange.StartOffset);
+					var allowedEndLoc = textArea.TextView.Document.GetLocation(textArea.AllowedSelectionRange.EndOffset);
+					var allowedStartPos = textArea.TextView.GetPosition(allowedStartLoc);
+					var allowedEndPos = textArea.TextView.GetPosition(allowedEndLoc);
+					if (allowedStartPos.CompareTo(fromPos) > 0)
+					{
+						// limit old pos
+						fromPos = allowedStartPos;
+					}
+					if (allowedEndPos.CompareTo(fromPos) < 0)
+					{
+						// completely outside range
+						allowSelection = false;
+					}
+
+					if (allowedEndPos.CompareTo(toPos) < 0)
+					{
+						toPos = allowedEndPos;
+					}
+					if (allowedStartPos.CompareTo(toPos) > 0)
+					{
+						allowSelection = false;
+					}
+
+					if (swappedPos)
+					{
+						var tmp = fromPos;
+						fromPos = toPos;
+						toPos = tmp;
+					}
+				}
+				
+				if (allowSelection)
+				{
+					if (mode == MouseSelectionMode.Normal && textArea.Selection is RectangleSelection)
+						textArea.Selection = new SimpleSelection(textArea, fromPos, toPos);
+					else if (mode == MouseSelectionMode.Rectangular && !(textArea.Selection is RectangleSelection))
+						textArea.Selection = new RectangleSelection(textArea, fromPos, toPos);
+					else
+						textArea.Selection = textArea.Selection.StartSelectionOrSetEndpoint(fromPos, toPos);
+				}
 			} else if (mode == MouseSelectionMode.WholeWord || mode == MouseSelectionMode.WholeLine) {
 				var newWord = (mode == MouseSelectionMode.WholeLine) ? GetLineAtMousePosition(e) : GetWordAtMousePosition(e);
 				if (newWord != SimpleSegment.Invalid) {
@@ -646,9 +699,9 @@ namespace ICSharpCode.AvalonEdit.Editing
 					                                      Math.Max(newWord.EndOffset, startWord.EndOffset));
 					// moves caret to start or end of selection
 					if( newWord.Offset < startWord.Offset) 
-						textArea.Caret.UpdateOffset(newWord.Offset, CaretPositionChangedSource.Selection);
+						textArea.Caret.UpdateOffset(newWord.Offset, CaretPositionChangedSource.MouseSelection);
 					else 
-						textArea.Caret.UpdateOffset(Math.Max(newWord.EndOffset, startWord.EndOffset), CaretPositionChangedSource.Selection);
+						textArea.Caret.UpdateOffset(Math.Max(newWord.EndOffset, startWord.EndOffset), CaretPositionChangedSource.MouseSelection);
 				}
 			}
 			textArea.Caret.BringCaretToView(5.0);

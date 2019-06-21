@@ -5,6 +5,7 @@ using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.Runtime.CompilerServices;
 using System.Text;
+using ICSharpCode.Text.Document;
 
 namespace ICSharpCode.Text
 {
@@ -614,7 +615,13 @@ namespace ICSharpCode.Text
 
     public static class TextRangeEx
     {
-	    [Pure]
+	    public static ISegment ToSegmentOrNull(this TextRange range)
+	    {
+		    if (range.IsEmpty) return null;
+			return new SimpleSegment(range.StartOffset, range.Length);
+	    }
+
+		[Pure]
 		public static TextRange ToTextRange(this int offset, int len = 1)
 	    {
 			if(offset == -1) return TextRange.Empty;

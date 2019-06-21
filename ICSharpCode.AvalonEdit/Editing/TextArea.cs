@@ -36,6 +36,7 @@ using ICSharpCode.AvalonEdit.Utils;
 using ICSharpCode.NRefactory;
 using ICSharpCode.NRefactory.Editor;
 using ICSharpCode.Text.Utils;
+using TextRange = ICSharpCode.Text.TextRange;
 
 namespace ICSharpCode.AvalonEdit.Editing
 {
@@ -97,7 +98,9 @@ namespace ICSharpCode.AvalonEdit.Editing
 		#endregion
 
 		public bool IsSelectionEnabled { get; set; } = true;
-		
+
+		public TextRange AllowedSelectionRange { get; set; }
+
 		#region InputHandler management
 		/// <summary>
 		/// Gets the default input handler.
@@ -1102,7 +1105,7 @@ namespace ICSharpCode.AvalonEdit.Editing
 			get { return (bool)GetValue(OverstrikeModeProperty); }
 			set { SetValue(OverstrikeModeProperty, value); }
 		}
-
+		
 		#endregion
 
 		/// <inheritdoc/>

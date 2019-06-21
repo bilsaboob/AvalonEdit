@@ -99,9 +99,9 @@ namespace ICSharpCode.AvalonEdit.Editing
 			AddBinding(EditingCommands.SelectDownByLine, Shift, Key.Down, OnMoveCaretExtendSelection(CaretMovementType.LineDown, CaretPositionChangedSource.KeyNavigationSelection));
 			AddBinding(RectangleSelection.BoxSelectDownByLine, Alt | Shift, Key.Down, OnMoveCaretBoxSelection(CaretMovementType.LineDown, CaretPositionChangedSource.KeyNavigationSelection));
 			
-			AddBinding(EditingCommands.MoveDownByPage, None, Key.PageDown, OnMoveCaret(CaretMovementType.PageDown, CaretPositionChangedSource.KeyNavigation));
+			AddBinding(EditingCommands.MoveDownByPage, None, Key.PageDown, OnMoveCaret(CaretMovementType.PageDown, CaretPositionChangedSource.KeyNavigation, limitToAllowedRange: true));
 			AddBinding(EditingCommands.SelectDownByPage, Shift, Key.PageDown, OnMoveCaretExtendSelection(CaretMovementType.PageDown, CaretPositionChangedSource.KeyNavigationSelection));
-			AddBinding(EditingCommands.MoveUpByPage, None, Key.PageUp, OnMoveCaret(CaretMovementType.PageUp, CaretPositionChangedSource.KeyNavigation));
+			AddBinding(EditingCommands.MoveUpByPage, None, Key.PageUp, OnMoveCaret(CaretMovementType.PageUp, CaretPositionChangedSource.KeyNavigation, limitToAllowedRange: true));
 			AddBinding(EditingCommands.SelectUpByPage, Shift, Key.PageUp, OnMoveCaretExtendSelection(CaretMovementType.PageUp, CaretPositionChangedSource.KeyNavigationSelection));
 			
 			AddBinding(EditingCommands.MoveToLineStart, None, Key.Home, OnMoveCaret(CaretMovementType.LineStart, CaretPositionChangedSource.KeyNavigation));
@@ -126,8 +126,19 @@ namespace ICSharpCode.AvalonEdit.Editing
 			TextArea textArea = GetTextArea(target);
 			if (textArea != null && textArea.Document != null) {
 				args.Handled = true;
-				textArea.Caret.UpdateOffset(textArea.Document.TextLength, CaretPositionChangedSource.Selection);
-				textArea.Selection = SimpleSelection.Create(textArea, 0, textArea.Document.TextLength);
+
+				var fromOffset = 0;
+				var toOffset = textArea.Document.TextLength;
+
+				var allowedRange = textArea.AllowedSelectionRange;
+				if (!allowedRange.IsEmpty)
+				{
+					fromOffset = allowedRange.StartOffset;
+					toOffset = allowedRange.EndOffset;
+				}
+
+				textArea.Caret.UpdateOffset(toOffset, CaretPositionChangedSource.Selection);
+				textArea.Selection = SimpleSelection.Create(textArea, fromOffset, toOffset);
 			}
 		}
 		
@@ -136,14 +147,17 @@ namespace ICSharpCode.AvalonEdit.Editing
 			return target as TextArea;
 		}
 		
-		static ExecutedRoutedEventHandler OnMoveCaret(CaretMovementType direction, CaretPositionChangedSource changedSource)
+		static ExecutedRoutedEventHandler OnMoveCaret(CaretMovementType direction, CaretPositionChangedSource changedSource, bool limitToAllowedRange = false)
 		{
 			return (target, args) => {
 				TextArea textArea = GetTextArea(target);
 				if (textArea != null && textArea.Document != null) {
 					args.Handled = true;
 					textArea.ClearSelection();
-					MoveCaret(textArea, direction, changedSource);
+					if(limitToAllowedRange)
+						MoveCaret(textArea, direction, changedSource, textArea.AllowedSelectionRange);
+					else
+						MoveCaret(textArea, direction, changedSource);
 					textArea.Caret.BringCaretToView();
 				}
 			};
@@ -156,9 +170,12 @@ namespace ICSharpCode.AvalonEdit.Editing
 				if (textArea != null && textArea.Document != null) {
 					args.Handled = true;
 					TextViewPosition oldPosition = textArea.Caret.Position;
-					MoveCaret(textArea, direction, changedSource);
-					textArea.Selection = textArea.Selection.StartSelectionOrSetEndpoint(oldPosition, textArea.Caret.Position);
-					textArea.Caret.BringCaretToView();
+					var allowed = MoveCaret(textArea, direction, changedSource, textArea.AllowedSelectionRange);
+					if (allowed)
+					{
+						textArea.Selection = textArea.Selection.StartSelectionOrSetEndpoint(oldPosition, textArea.Caret.Position);
+						textArea.Caret.BringCaretToView();
+					}
 				}
 			};
 		}
@@ -189,12 +206,63 @@ namespace ICSharpCode.AvalonEdit.Editing
 		}
 		
 		#region Caret movement
-		internal static void MoveCaret(TextArea textArea, CaretMovementType direction, CaretPositionChangedSource changedSource)
+		internal static bool MoveCaret(TextArea textArea, CaretMovementType direction, CaretPositionChangedSource changedSource, Text.TextRange? allowedRange = null)
 		{
 			double desiredXPos = textArea.Caret.DesiredXPos;
-			var newPos = GetNewCaretPosition(textArea.TextView, textArea.Caret.Position, direction, textArea.Selection.EnableVirtualSpace, ref desiredXPos);
-			textArea.Caret.UpdatePosition(newPos, changedSource);
-			textArea.Caret.DesiredXPos = desiredXPos;
+			var toPos = GetNewCaretPosition(textArea.TextView, textArea.Caret.Position, direction, textArea.Selection.EnableVirtualSpace, ref desiredXPos);
+			
+			var allowMove = true;
+			if (allowedRange != null && !allowedRange.Value.IsEmpty)
+			{
+				var fromPos = textArea.Caret.Position;
+
+				var swappedPos = false;
+				if (fromPos.CompareTo(toPos) > 0)
+				{
+					var tmp = fromPos;
+					fromPos = toPos;
+					toPos = tmp;
+					swappedPos = true;
+				}
+				
+				var allowedStartPos = new TextViewPosition(textArea.Document.GetLocation(allowedRange.Value.StartOffset));
+				var allowedEndPos = new TextViewPosition(textArea.Document.GetLocation(allowedRange.Value.EndOffset));
+				
+				if (allowedStartPos.CompareTo(fromPos) > 0)
+				{
+					// limit old pos
+					fromPos = allowedStartPos;
+				}
+				if (allowedEndPos.CompareTo(fromPos) < 0)
+				{
+					// completely outside range
+					allowMove = false;
+				}
+
+				if (allowedEndPos.CompareTo(toPos) < 0)
+				{
+					toPos = allowedEndPos;
+				}
+				if (allowedStartPos.CompareTo(toPos) > 0)
+				{
+					allowMove = false;
+				}
+
+				if (swappedPos)
+				{
+					var tmp = fromPos;
+					fromPos = toPos;
+					toPos = tmp;
+				}
+			}
+
+			if (allowMove)
+			{
+				textArea.Caret.UpdatePosition(toPos, changedSource);
+				textArea.Caret.DesiredXPos = desiredXPos;
+			}
+
+			return allowMove;
 		}
 		
 		internal static TextViewPosition GetNewCaretPosition(TextView textView, TextViewPosition caretPosition, CaretMovementType direction, bool enableVirtualSpace, ref double desiredXPos)
