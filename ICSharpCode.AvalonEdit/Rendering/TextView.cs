@@ -1868,9 +1868,10 @@ namespace ICSharpCode.AvalonEdit.Rendering
 			return line.GetTextViewPosition(visualPosition, Options.EnableVirtualSpace);
 		}
 
-		public TextViewPosition GetPosition(TextLocation loc)
+		public TextViewPosition? GetPosition(TextLocation loc)
 		{
 			var line = GetVisualLine(loc.Line);
+			if(line == null) return null;
 			return line.GetTextViewPosition(loc.Column-1);
 		}
 		

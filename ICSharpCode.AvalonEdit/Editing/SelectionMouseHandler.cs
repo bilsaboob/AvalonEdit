@@ -652,8 +652,8 @@ namespace ICSharpCode.AvalonEdit.Editing
 					
 					var allowedStartLoc = textArea.TextView.Document.GetLocation(textArea.AllowedSelectionRange.StartOffset);
 					var allowedEndLoc = textArea.TextView.Document.GetLocation(textArea.AllowedSelectionRange.EndOffset);
-					var allowedStartPos = textArea.TextView.GetPosition(allowedStartLoc);
-					var allowedEndPos = textArea.TextView.GetPosition(allowedEndLoc);
+					var allowedStartPos = textArea.TextView.GetPosition(allowedStartLoc) ?? new TextViewPosition(allowedStartLoc);
+					var allowedEndPos = textArea.TextView.GetPosition(allowedEndLoc) ?? new TextViewPosition(allowedEndLoc);
 					if (allowedStartPos.CompareTo(fromPos) > 0)
 					{
 						// limit old pos
