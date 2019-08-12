@@ -18,8 +18,8 @@
 
 using System;
 using System.Windows.Documents;
-using ICSharpCode.Text.Document;
 using ICSharpCode.NRefactory.Editor;
+using RapidText.Document;
 
 namespace ICSharpCode.AvalonEdit.Snippets
 {

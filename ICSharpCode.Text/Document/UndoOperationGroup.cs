@@ -18,9 +18,9 @@
 
 using System;
 using System.Diagnostics;
-using ICSharpCode.Text.Utils;
+using RapidText.Utils;
 
-namespace ICSharpCode.Text.Document
+namespace RapidText.Document
 {
 	/// <summary>
 	/// This class stacks the last x operations from the undostack and makes

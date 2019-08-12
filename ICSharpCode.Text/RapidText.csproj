@@ -5,8 +5,8 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">Net40</Platform>
     <OutputType>Library</OutputType>
-    <RootNamespace>ICSharpCode.Text</RootNamespace>
-    <AssemblyName>ICSharpCode.Text</AssemblyName>
+    <RootNamespace>RapidText</RootNamespace>
+    <AssemblyName>RapidText</AssemblyName>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <AllowUnsafeBlocks>False</AllowUnsafeBlocks>
     <NoStdLib>False</NoStdLib>

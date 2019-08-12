@@ -20,9 +20,9 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
-using ICSharpCode.Text.Utils;
+using RapidText.Utils;
 
-namespace ICSharpCode.Text.Document
+namespace RapidText.Document
 {
 	/// <summary>
 	/// Undo stack implementation.

@@ -19,12 +19,13 @@
 using System;
 using System.Diagnostics;
 using System.Globalization;
-using ICSharpCode.Text.Utils;
+using RapidText.Utils;
+
 #if NREFACTORY
 using ICSharpCode.NRefactory.Editor;
 #endif
 
-namespace ICSharpCode.Text.Document
+namespace RapidText.Document
 {
 	/// <summary>
 	/// Represents a simple segment (Offset,Length pair) that is not automatically updated

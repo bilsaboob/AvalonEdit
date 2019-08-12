@@ -18,7 +18,7 @@
 
 using System;
 using System.ComponentModel;
-using ICSharpCode.Text.Document;
+using RapidText.Document;
 
 namespace ICSharpCode.AvalonEdit.Rendering
 {

@@ -20,7 +20,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 
-namespace ICSharpCode.Text.Utils
+namespace RapidText.Utils
 {
 	/// <summary>
 	/// Invokes an action when it is disposed.

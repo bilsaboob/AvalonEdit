@@ -17,12 +17,12 @@
 // DEALINGS IN THE SOFTWARE.
 
 using System;
+using RapidText.Utils;
 #if NREFACTORY
 using ICSharpCode.NRefactory.Editor;
 #endif
-using ICSharpCode.Text.Utils;
 
-namespace ICSharpCode.Text.Document
+namespace RapidText.Document
 {
 	/// <summary>
 	/// Contains weak event managers for the TextDocument events.

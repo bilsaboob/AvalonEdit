@@ -17,7 +17,7 @@
 // DEALINGS IN THE SOFTWARE.
 
 using System;
-using ICSharpCode.Text.Document;
+using RapidText.Document;
 
 namespace ICSharpCode.AvalonEdit.Indentation.CSharp
 {

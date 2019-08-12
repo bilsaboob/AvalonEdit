@@ -23,7 +23,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.TextFormatting;
-using ICSharpCode.Text.Utils;
+using RapidText.Utils;
 
 namespace ICSharpCode.AvalonEdit.Utils
 {

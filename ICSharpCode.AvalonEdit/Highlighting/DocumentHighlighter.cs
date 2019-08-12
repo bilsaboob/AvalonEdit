@@ -21,10 +21,10 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using ICSharpCode.NRefactory.Editor;
-using ICSharpCode.Text.Document;
 using ICSharpCode.AvalonEdit.Utils;
-using ICSharpCode.Text.Utils;
-using SpanStack = ICSharpCode.Text.Utils.ImmutableStack<ICSharpCode.AvalonEdit.Highlighting.HighlightingSpan>;
+using RapidText.Document;
+using RapidText.Utils;
+using SpanStack = RapidText.Utils.ImmutableStack<ICSharpCode.AvalonEdit.Highlighting.HighlightingSpan>;
 
 namespace ICSharpCode.AvalonEdit.Highlighting
 {

@@ -24,7 +24,7 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Xml;
 
-namespace ICSharpCode.Text.Utils
+namespace RapidText.Utils
 {
 	public static class ExtensionMethods
 	{

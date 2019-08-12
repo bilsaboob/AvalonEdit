@@ -19,9 +19,9 @@
 using System;
 using System.Diagnostics;
 using System.Text;
-using ICSharpCode.Text.Utils;
+using RapidText.Utils;
 
-namespace ICSharpCode.Text.Document
+namespace RapidText.Document
 {
 	// Class used to represent a node in the tree.
 	// There are three types of nodes:

@@ -19,7 +19,7 @@
 using System;
 using System.IO;
 
-namespace ICSharpCode.Text.Document
+namespace RapidText.Document
 {
 	/// <summary>
 	/// Poor man's template specialization: extension methods for Rope&lt;char&gt;.

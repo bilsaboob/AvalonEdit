@@ -19,9 +19,8 @@
 using System;
 using System.IO;
 using System.Text;
-using System.Threading.Tasks;
 
-namespace ICSharpCode.Text.IO
+namespace RapidText.IO
 {
 	public static class FileWriter
 	{

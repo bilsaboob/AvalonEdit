@@ -32,10 +32,10 @@ using System.Windows.Media;
 using System.Windows.Media.TextFormatting;
 using System.Windows.Threading;
 using ICSharpCode.NRefactory.Editor;
-using ICSharpCode.Text.Document;
 using ICSharpCode.AvalonEdit.Utils;
-using ICSharpCode.Text;
-using ICSharpCode.Text.Utils;
+using RapidText;
+using RapidText.Document;
+using RapidText.Utils;
 
 namespace ICSharpCode.AvalonEdit.Rendering
 {

@@ -18,9 +18,8 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 
-namespace ICSharpCode.Text.Utils
+namespace RapidText.Utils
 {
 	/// <summary>
 	/// Double-ended queue.

@@ -19,10 +19,11 @@
 using System;
 using System.Windows.Media;
 using ICSharpCode.AvalonEdit.Editing;
+using RapidText.Document;
 #if NREFACTORY
 using ICSharpCode.NRefactory.Editor;
 #else
-using ICSharpCode.Text.Document;
+
 #endif
 
 namespace ICSharpCode.AvalonEdit.CodeCompletion

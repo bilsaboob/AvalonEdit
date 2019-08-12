@@ -18,7 +18,7 @@
 
 using System;
 
-namespace ICSharpCode.Text.Document
+namespace RapidText.Document
 {
 	/// <summary>
 	/// A TextAnchorNode is placed in the TextAnchorTree.

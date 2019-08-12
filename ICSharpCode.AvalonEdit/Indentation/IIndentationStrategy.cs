@@ -16,8 +16,8 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
-using ICSharpCode.Text.Document;
 using System;
+using RapidText.Document;
 
 namespace ICSharpCode.AvalonEdit.Indentation
 {

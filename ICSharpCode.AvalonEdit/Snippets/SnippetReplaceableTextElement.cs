@@ -22,8 +22,8 @@ using System.Windows;
 using System.Windows.Documents;
 using System.Windows.Media;
 using ICSharpCode.NRefactory.Editor;
-using ICSharpCode.Text.Document;
 using ICSharpCode.AvalonEdit.Rendering;
+using RapidText.Document;
 
 namespace ICSharpCode.AvalonEdit.Snippets
 {

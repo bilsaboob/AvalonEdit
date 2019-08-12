@@ -16,13 +16,7 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
-using System;
-using System.Diagnostics;
-using System.Text;
-
-using ICSharpCode.Text.Utils;
-
-namespace ICSharpCode.Text.Document
+namespace RapidText.Document
 {
 	/*
 	/// <summary>

@@ -31,14 +31,13 @@ using System.Windows.Markup;
 using System.Windows.Media;
 using System.Windows.Shapes;
 using System.Windows.Threading;
-
-using ICSharpCode.Text.Document;
 using ICSharpCode.AvalonEdit.Editing;
 using ICSharpCode.AvalonEdit.Highlighting;
 using ICSharpCode.AvalonEdit.Rendering;
 using ICSharpCode.AvalonEdit.Utils;
-using ICSharpCode.Text.IO;
-using ICSharpCode.Text.Utils;
+using RapidText.Document;
+using RapidText.IO;
+using RapidText.Utils;
 
 namespace ICSharpCode.AvalonEdit
 {

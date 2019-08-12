@@ -19,11 +19,12 @@
 using System;
 using System.Globalization;
 using System.Windows.Documents;
+
 #if NREFACTORY
 using ICSharpCode.NRefactory.Editor;
 #endif
 
-namespace ICSharpCode.Text.Document
+namespace RapidText.Document
 {
 	/// <summary>
 	/// Specifies the mode for getting the next caret position.

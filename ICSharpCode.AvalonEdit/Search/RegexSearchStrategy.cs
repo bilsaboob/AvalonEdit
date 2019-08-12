@@ -22,8 +22,8 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows.Documents;
-using ICSharpCode.Text.Document;
 using ICSharpCode.NRefactory.Editor;
+using RapidText.Document;
 
 namespace ICSharpCode.AvalonEdit.Search
 {

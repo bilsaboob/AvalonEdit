@@ -24,17 +24,15 @@ using System.ComponentModel.Design;
 using System.Diagnostics;
 using System.Globalization;
 using System.Threading;
-using System.Threading.Tasks;
-using ICSharpCode.Text.Document;
-using ICSharpCode.Text.IO;
-using ICSharpCode.Text.IO;
-using ICSharpCode.Text.Utils;
+using RapidText.IO;
+using RapidText.Utils;
+
 #if NREFACTORY
 using ICSharpCode.NRefactory;
 using ICSharpCode.NRefactory.Editor;
 #endif
 
-namespace ICSharpCode.Text.Document
+namespace RapidText.Document
 {
 	/// <summary>
 	/// This class is the main class of the text model. Basically, it is a <see cref="System.Text.StringBuilder"/> with events.

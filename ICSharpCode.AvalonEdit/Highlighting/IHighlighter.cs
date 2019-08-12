@@ -18,10 +18,11 @@
 
 using System;
 using System.Collections.Generic;
+using RapidText.Document;
 #if NREFACTORY
 using ICSharpCode.NRefactory.Editor;
 #else
-using ICSharpCode.Text.Document;
+
 #endif
 
 namespace ICSharpCode.AvalonEdit.Highlighting

@@ -20,9 +20,9 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using ICSharpCode.Text.Document;
+using RapidText.Document;
 
-namespace ICSharpCode.Text.IO
+namespace RapidText.IO
 {
 	/// <summary>
 	/// TextReader implementation that reads text from a rope.

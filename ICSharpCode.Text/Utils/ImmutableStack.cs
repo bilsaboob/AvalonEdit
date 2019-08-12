@@ -18,10 +18,9 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Text;
 
-namespace ICSharpCode.Text.Utils
+namespace RapidText.Utils
 {
 	/// <summary>
 	/// An immutable stack.

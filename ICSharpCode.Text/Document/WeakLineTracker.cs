@@ -18,7 +18,7 @@
 
 using System;
 
-namespace ICSharpCode.Text.Document
+namespace RapidText.Document
 {
 	/// <summary>
 	/// Allows registering a line tracker on a TextDocument using a weak reference from the document to the line tracker.

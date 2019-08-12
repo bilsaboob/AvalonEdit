@@ -22,10 +22,10 @@ using System.Text;
 #if NREFACTORY
 using ICSharpCode.NRefactory.Editor;
 #endif
-using ICSharpCode.Text.Document;
 using ICSharpCode.AvalonEdit.Rendering;
 using ICSharpCode.AvalonEdit.Utils;
-using ICSharpCode.Text.Utils;
+using RapidText.Document;
+using RapidText.Utils;
 
 namespace ICSharpCode.AvalonEdit.Folding
 {

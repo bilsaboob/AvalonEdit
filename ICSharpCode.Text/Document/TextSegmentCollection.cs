@@ -23,12 +23,13 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Windows;
-using ICSharpCode.Text.Utils;
+using RapidText.Utils;
+
 #if NREFACTORY
 using ICSharpCode.NRefactory.Editor;
 #endif
 
-namespace ICSharpCode.Text.Document
+namespace RapidText.Document
 {
 	/// <summary>
 	/// Interface to allow TextSegments to access the TextSegmentCollection - we cannot use a direct reference

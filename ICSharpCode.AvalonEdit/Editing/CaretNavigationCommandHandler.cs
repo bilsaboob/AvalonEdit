@@ -24,10 +24,11 @@ using System.Windows;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media.TextFormatting;
-using ICSharpCode.Text.Document;
 using ICSharpCode.AvalonEdit.Rendering;
 using ICSharpCode.AvalonEdit.Utils;
-using ICSharpCode.Text.Utils;
+using RapidText.Document;
+using RapidText.Utils;
+using TextRange = RapidText.TextRange;
 
 namespace ICSharpCode.AvalonEdit.Editing
 {
@@ -206,7 +207,7 @@ namespace ICSharpCode.AvalonEdit.Editing
 		}
 		
 		#region Caret movement
-		internal static bool MoveCaret(TextArea textArea, CaretMovementType direction, CaretPositionChangedSource changedSource, Text.TextRange? allowedRange = null)
+		internal static bool MoveCaret(TextArea textArea, CaretMovementType direction, CaretPositionChangedSource changedSource, TextRange? allowedRange = null)
 		{
 			double desiredXPos = textArea.Caret.DesiredXPos;
 			var toPos = GetNewCaretPosition(textArea.TextView, textArea.Caret.Position, direction, textArea.Selection.EnableVirtualSpace, ref desiredXPos);

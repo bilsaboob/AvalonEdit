@@ -23,8 +23,8 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Windows.Documents;
-using ICSharpCode.Text.Document;
 using ICSharpCode.AvalonEdit.Utils;
+using RapidText.Document;
 
 namespace ICSharpCode.AvalonEdit.Highlighting
 {

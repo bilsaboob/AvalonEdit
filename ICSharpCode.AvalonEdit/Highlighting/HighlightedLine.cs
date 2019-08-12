@@ -21,9 +21,9 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using ICSharpCode.Text.Document;
 using ICSharpCode.AvalonEdit.Utils;
 using ICSharpCode.NRefactory.Editor;
+using RapidText.Document;
 
 namespace ICSharpCode.AvalonEdit.Highlighting
 {

@@ -21,7 +21,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
 
-namespace ICSharpCode.Text.Document
+namespace RapidText.Document
 {
 	using LineNode = DocumentLine;
 	

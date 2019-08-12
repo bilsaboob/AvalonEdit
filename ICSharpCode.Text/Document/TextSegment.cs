@@ -18,11 +18,12 @@
 
 using System;
 using System.Diagnostics;
+
 #if NREFACTORY
 using ICSharpCode.NRefactory.Editor;
 #endif
 
-namespace ICSharpCode.Text.Document
+namespace RapidText.Document
 {
 	/// <summary>
 	/// A segment that can be put into a <see cref="TextSegmentCollection{T}"/>.

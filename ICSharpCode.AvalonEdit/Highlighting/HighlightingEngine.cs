@@ -24,11 +24,11 @@ using System.Text.RegularExpressions;
 #if NREFACTORY
 using ICSharpCode.NRefactory.Editor;
 #else
-using ICSharpCode.Text.Document;
 #endif
 using ICSharpCode.AvalonEdit.Utils;
-using ICSharpCode.Text.Utils;
-using SpanStack = ICSharpCode.Text.Utils.ImmutableStack<ICSharpCode.AvalonEdit.Highlighting.HighlightingSpan>;
+using RapidText.Document;
+using RapidText.Utils;
+using SpanStack = RapidText.Utils.ImmutableStack<ICSharpCode.AvalonEdit.Highlighting.HighlightingSpan>;
 
 namespace ICSharpCode.AvalonEdit.Highlighting
 {

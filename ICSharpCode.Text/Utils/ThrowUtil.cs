@@ -19,7 +19,7 @@
 using System;
 using System.Globalization;
 
-namespace ICSharpCode.Text.Utils
+namespace RapidText.Utils
 {
 	/// <summary>
 	/// Contains exception-throwing helper methods.

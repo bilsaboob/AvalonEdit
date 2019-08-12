@@ -19,7 +19,7 @@
 using System;
 using System.Text.RegularExpressions;
 using ICSharpCode.AvalonEdit.Utils;
-using ICSharpCode.Text.Document;
+using RapidText.Document;
 
 namespace ICSharpCode.AvalonEdit.Rendering
 {

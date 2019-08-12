@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Text;
-using ICSharpCode.Text;
 
-namespace ZenPad.Common.Text.Buffers
+namespace RapidText.Buffer.Buffers
 {
     public class ArrayBuffer : IEditableBuffer, IBuffer
     {

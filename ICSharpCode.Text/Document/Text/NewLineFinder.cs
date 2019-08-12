@@ -23,7 +23,7 @@ using System.Text;
 using ICSharpCode.NRefactory.Editor;
 #endif
 
-namespace ICSharpCode.Text.Document
+namespace RapidText.Document
 {
 	public static class NewLineFinder
 	{

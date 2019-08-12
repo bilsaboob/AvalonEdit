@@ -23,7 +23,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Xml;
 using ICSharpCode.AvalonEdit.Utils;
-using ICSharpCode.Text.Utils;
+using RapidText.Utils;
 
 namespace ICSharpCode.AvalonEdit.Highlighting
 {

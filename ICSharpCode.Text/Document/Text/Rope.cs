@@ -22,9 +22,9 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Text;
-using ICSharpCode.Text.Utils;
+using RapidText.Utils;
 
-namespace ICSharpCode.Text.Document
+namespace RapidText.Document
 {
 	/// <summary>
 	/// A kind of List&lt;T&gt;, but more efficient for random insertions/removal.

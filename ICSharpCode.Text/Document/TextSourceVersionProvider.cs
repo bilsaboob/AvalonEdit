@@ -20,9 +20,9 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using ICSharpCode.Text.Utils;
+using RapidText.Utils;
 
-namespace ICSharpCode.Text.Document
+namespace RapidText.Document
 {
 	#if !NREFACTORY
 	/// <summary>

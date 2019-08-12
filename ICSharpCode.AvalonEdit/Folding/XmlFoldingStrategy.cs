@@ -21,8 +21,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Xml;
-
-using ICSharpCode.Text.Document;
+using RapidText.Document;
 
 namespace ICSharpCode.AvalonEdit.Folding
 {

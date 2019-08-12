@@ -21,8 +21,8 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Text;
 using System.Windows;
-using ICSharpCode.Text.Document;
 using ICSharpCode.NRefactory.Editor;
+using RapidText.Document;
 
 namespace ICSharpCode.AvalonEdit.Highlighting
 {

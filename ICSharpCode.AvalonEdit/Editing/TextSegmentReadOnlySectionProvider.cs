@@ -18,7 +18,8 @@
 
 using System;
 using System.Collections.Generic;
-using ICSharpCode.Text.Document;
+using RapidText.Document;
+
 #if NREFACTORY
 using ICSharpCode.NRefactory.Editor;
 #endif

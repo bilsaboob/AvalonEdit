@@ -19,11 +19,12 @@
 using System;
 using System.IO;
 using System.Text;
+
 #if NREFACTORY
 using ICSharpCode.NRefactory.Editor;
 #endif
 
-namespace ICSharpCode.Text.Document
+namespace RapidText.Document
 {
 	/// <summary>
 	/// A TextWriter implementation that directly inserts into a document.

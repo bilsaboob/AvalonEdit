@@ -20,7 +20,7 @@ using System;
 using System.Runtime.Serialization;
 using ICSharpCode.AvalonEdit.Editing;
 using ICSharpCode.NRefactory.Editor;
-using ICSharpCode.Text.Document;
+using RapidText.Document;
 
 namespace ICSharpCode.AvalonEdit.Snippets
 {

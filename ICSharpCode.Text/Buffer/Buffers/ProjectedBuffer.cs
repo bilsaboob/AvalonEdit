@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Text;
-using ICSharpCode.Text;
 
-namespace ZenPad.Common.Text.Buffers
+namespace RapidText.Buffer.Buffers
 {
     public class ProjectedBuffer : IBuffer
     {

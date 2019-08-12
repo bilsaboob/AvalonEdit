@@ -20,8 +20,8 @@ using System;
 using System.Diagnostics;
 using System.Windows;
 using System.Windows.Media;
-using ICSharpCode.Text.Document;
 using ICSharpCode.AvalonEdit.Rendering;
+using RapidText.Document;
 
 namespace ICSharpCode.AvalonEdit.Highlighting
 {

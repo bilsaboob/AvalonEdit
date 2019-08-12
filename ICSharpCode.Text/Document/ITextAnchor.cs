@@ -17,11 +17,12 @@
 // DEALINGS IN THE SOFTWARE.
 
 using System;
+
 #if NREFACTORY
 using ICSharpCode.NRefactory;
 #endif
 
-namespace ICSharpCode.Text.Document
+namespace RapidText.Document
 {
 	#if !NREFACTORY
 	/// <summary>

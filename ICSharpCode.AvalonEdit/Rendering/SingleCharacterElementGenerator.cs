@@ -21,9 +21,8 @@ using System.Windows;
 using System.Windows.Documents;
 using System.Windows.Media;
 using System.Windows.Media.TextFormatting;
-
-using ICSharpCode.Text.Document;
 using ICSharpCode.AvalonEdit.Utils;
+using RapidText.Document;
 
 namespace ICSharpCode.AvalonEdit.Rendering
 {

@@ -17,8 +17,8 @@
 // DEALINGS IN THE SOFTWARE.
 
 using System;
-using ICSharpCode.Text.Document;
 using ICSharpCode.AvalonEdit.Rendering;
+using RapidText.Document;
 
 namespace ICSharpCode.AvalonEdit.Highlighting
 {

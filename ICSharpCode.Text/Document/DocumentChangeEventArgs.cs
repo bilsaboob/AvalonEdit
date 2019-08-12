@@ -17,12 +17,12 @@
 // DEALINGS IN THE SOFTWARE.
 
 using System;
-using ICSharpCode.Text.Document;
+
 #if NREFACTORY
 using ICSharpCode.NRefactory.Editor;
 #endif
 
-namespace ICSharpCode.Text.Document
+namespace RapidText.Document
 {
 	/// <summary>
 	/// Describes a change of the document text.

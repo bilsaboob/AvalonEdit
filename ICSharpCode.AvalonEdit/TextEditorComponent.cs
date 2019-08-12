@@ -18,9 +18,9 @@
 
 using System;
 using System.ComponentModel;
-using ICSharpCode.Text.Document;
 using ICSharpCode.AvalonEdit.Editing;
 using ICSharpCode.AvalonEdit.Rendering;
+using RapidText.Document;
 
 namespace ICSharpCode.AvalonEdit
 {

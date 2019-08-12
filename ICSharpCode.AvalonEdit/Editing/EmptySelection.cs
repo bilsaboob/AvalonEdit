@@ -19,10 +19,9 @@
 using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
-
-using ICSharpCode.Text.Document;
 using ICSharpCode.AvalonEdit.Utils;
-using ICSharpCode.Text.Utils;
+using RapidText.Document;
+using RapidText.Utils;
 
 #if NREFACTORY
 using ICSharpCode.NRefactory;

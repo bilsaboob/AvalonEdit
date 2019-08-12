@@ -19,8 +19,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-
-using ICSharpCode.Text.Document;
+using RapidText.Document;
 
 namespace ICSharpCode.AvalonEdit.Rendering
 {

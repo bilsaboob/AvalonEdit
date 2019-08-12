@@ -17,14 +17,13 @@
 // DEALINGS IN THE SOFTWARE.
 
 using System;
-using ICSharpCode.Text.Utils;
+using RapidText.Utils;
 #if NREFACTORY
 using ICSharpCode.NRefactory;
 using ICSharpCode.NRefactory.Editor;
 #endif
-using ICSharpCode.Text.Document;
 
-namespace ICSharpCode.Text.Document
+namespace RapidText.Document
 {
 	/// <summary>
 	/// The TextAnchor class references an offset (a position between two characters).

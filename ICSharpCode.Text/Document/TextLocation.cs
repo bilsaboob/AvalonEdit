@@ -20,7 +20,7 @@ using System;
 using System.ComponentModel;
 using System.Globalization;
 
-namespace ICSharpCode.Text.Document
+namespace RapidText.Document
 {
 	#if !NREFACTORY
 	/// <summary>

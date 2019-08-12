@@ -20,8 +20,9 @@ using System;
 using System.Collections.Generic;
 using System.Windows;
 using ICSharpCode.NRefactory.Editor;
-using ICSharpCode.Text.Document;
 using ICSharpCode.AvalonEdit.Editing;
+using RapidText.Document;
+using TextUtilities = RapidText.Document.TextUtilities;
 
 namespace ICSharpCode.AvalonEdit.Snippets
 {
@@ -70,7 +71,7 @@ namespace ICSharpCode.AvalonEdit.Snippets
 		/// <summary>
 		/// Gets the text document.
 		/// </summary>
-		public ICSharpCode.Text.Document.TextDocument Document { get; private set; }
+		public TextDocument Document { get; private set; }
 		
 		/// <summary>
 		/// Gets the text that was selected before the insertion of the snippet.
@@ -98,7 +99,7 @@ namespace ICSharpCode.AvalonEdit.Snippets
 		public int InsertionPosition { get; set; }
 		
 		readonly int startPosition;
-		ICSharpCode.Text.Document.AnchorSegment wholeSnippetAnchor;
+		AnchorSegment wholeSnippetAnchor;
 		bool deactivateIfSnippetEmpty;
 		
 		/// <summary>

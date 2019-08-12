@@ -26,9 +26,10 @@ using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Documents;
 using System.Windows.Input;
-using ICSharpCode.Text.Document;
 using ICSharpCode.AvalonEdit.Highlighting;
-using ICSharpCode.Text.Utils;
+using RapidText.Document;
+using RapidText.Utils;
+
 #if NREFACTORY
 using ICSharpCode.NRefactory.Editor;
 #endif

@@ -5,9 +5,9 @@ using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.Runtime.CompilerServices;
 using System.Text;
-using ICSharpCode.Text.Document;
+using RapidText.Document;
 
-namespace ICSharpCode.Text
+namespace RapidText
 {
     /// <summary>Represents a range in a plaintext document.</summary>
     [DebuggerDisplay("Range = ({StartOffset}:{EndOffset}), Length = {Length}")]

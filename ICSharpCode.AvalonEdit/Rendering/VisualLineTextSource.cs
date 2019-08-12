@@ -19,9 +19,8 @@
 using System;
 using System.Diagnostics;
 using System.Windows.Media.TextFormatting;
-
-using ICSharpCode.Text.Document;
 using ICSharpCode.AvalonEdit.Utils;
+using RapidText.Document;
 
 namespace ICSharpCode.AvalonEdit.Rendering
 {

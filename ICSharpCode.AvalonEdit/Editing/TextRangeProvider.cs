@@ -19,9 +19,9 @@
 using System;
 using System.Windows.Automation.Provider;
 using System.Windows.Documents;
-using ICSharpCode.Text.Document;
 using System.Windows.Automation.Text;
 using System.Diagnostics;
+using RapidText.Document;
 
 namespace ICSharpCode.AvalonEdit.Editing
 {

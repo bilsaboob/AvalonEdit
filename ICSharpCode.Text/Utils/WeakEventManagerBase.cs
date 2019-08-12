@@ -20,7 +20,7 @@ using System;
 using System.Diagnostics;
 using System.Windows;
 
-namespace ICSharpCode.Text.Utils
+namespace RapidText.Utils
 {
 	/// <summary>
 	/// WeakEventManager with AddListener/RemoveListener and CurrentManager implementation.

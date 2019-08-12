@@ -22,8 +22,8 @@ using System.Windows;
 using System.Windows.Documents;
 
 using ICSharpCode.NRefactory.Editor;
-using ICSharpCode.Text.Document;
 using ICSharpCode.AvalonEdit.Highlighting;
+using RapidText.Document;
 
 namespace ICSharpCode.AvalonEdit.Utils
 {

@@ -1,7 +1,6 @@
 ﻿using System.Runtime.InteropServices;
-using ICSharpCode.Text;
 
-namespace ZenPad.Common.Text
+namespace RapidText.Buffer
 {
     [StructLayout(LayoutKind.Auto)]
     public struct BufferRange

@@ -18,7 +18,7 @@
 
 using System;
 
-namespace ICSharpCode.Text.Document
+namespace RapidText.Document
 {
 	/// <summary>
 	/// Represents a string with a segment.

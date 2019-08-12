@@ -19,11 +19,12 @@
 using System;
 using System.Diagnostics;
 using System.Globalization;
+
 #if NREFACTORY
 using ICSharpCode.NRefactory.Editor;
 #endif
 
-namespace ICSharpCode.Text.Document
+namespace RapidText.Document
 {
 	/// <summary>
 	/// Represents a line inside a <see cref="TextDocument"/>.
