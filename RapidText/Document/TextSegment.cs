@@ -55,35 +55,37 @@ namespace RapidText.Document
 	/// <seealso cref="TextSegmentCollection{T}"/>
 	public class TextSegment : ISegment
 	{
-		internal ISegmentTree ownerTree;
-		internal TextSegment left, right, parent;
-		
+		public ISegmentTree ownerTree;
+		public TextSegment left;
+		public TextSegment right;
+		public TextSegment parent;
+
 		/// <summary>
 		/// The color of the segment in the red/black tree.
 		/// </summary>
-		internal bool color;
+		public bool color;
 		
 		/// <summary>
 		/// The "length" of the node (distance to previous node)
 		/// </summary>
-		internal int nodeLength;
+		public int nodeLength;
 		
 		/// <summary>
 		/// The total "length" of this subtree.
 		/// </summary>
-		internal int totalNodeLength; // totalNodeLength = nodeLength + left.totalNodeLength + right.totalNodeLength
+		public int totalNodeLength; // totalNodeLength = nodeLength + left.totalNodeLength + right.totalNodeLength
 		
 		/// <summary>
 		/// The length of the segment (do not confuse with nodeLength).
 		/// </summary>
-		internal int segmentLength;
+		public int segmentLength;
 		
 		/// <summary>
 		/// distanceToMaxEnd = Max(segmentLength,
 		///                        left.distanceToMaxEnd + left.Offset - Offset,
 		///                        left.distanceToMaxEnd + right.Offset - Offset)
 		/// </summary>
-		internal int distanceToMaxEnd;
+		public int distanceToMaxEnd;
 		
 		int ISegment.Offset {
 			get { return StartOffset; }
@@ -191,8 +193,8 @@ namespace RapidText.Document
 		protected virtual void OnSegmentChanged()
 		{
 		}
-		
-		internal TextSegment LeftMost {
+
+		public TextSegment LeftMost {
 			get {
 				TextSegment node = this;
 				while (node.left != null)
@@ -200,8 +202,8 @@ namespace RapidText.Document
 				return node;
 			}
 		}
-		
-		internal TextSegment RightMost {
+
+		public TextSegment RightMost {
 			get {
 				TextSegment node = this;
 				while (node.right != null)
@@ -213,7 +215,7 @@ namespace RapidText.Document
 		/// <summary>
 		/// Gets the inorder successor of the node.
 		/// </summary>
-		internal TextSegment Successor {
+		public TextSegment Successor {
 			get {
 				if (right != null) {
 					return right.LeftMost;
@@ -233,7 +235,7 @@ namespace RapidText.Document
 		/// <summary>
 		/// Gets the inorder predecessor of the node.
 		/// </summary>
-		internal TextSegment Predecessor {
+		public TextSegment Predecessor {
 			get {
 				if (left != null) {
 					return left.RightMost;
@@ -251,7 +253,7 @@ namespace RapidText.Document
 		}
 		
 		#if DEBUG
-		internal string ToDebugString()
+		public string ToDebugString()
 		{
 			return "[nodeLength=" + nodeLength + " totalNodeLength=" + totalNodeLength
 				+ " distanceToMaxEnd=" + distanceToMaxEnd + " MaxEndOffset=" + (StartOffset + distanceToMaxEnd) + "]";

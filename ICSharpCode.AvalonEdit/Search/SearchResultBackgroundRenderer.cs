@@ -25,6 +25,7 @@ using System.Windows.Media;
 using ICSharpCode.AvalonEdit.Editing;
 using ICSharpCode.AvalonEdit.Rendering;
 using RapidText.Document;
+using RapidTextExt.Document;
 
 namespace ICSharpCode.AvalonEdit.Search
 {

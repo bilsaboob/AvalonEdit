@@ -38,6 +38,8 @@ using ICSharpCode.AvalonEdit.Utils;
 using RapidText.Document;
 using RapidText.IO;
 using RapidText.Utils;
+using RapidTextExt.Document;
+using RapidTextExt.Utils;
 
 namespace ICSharpCode.AvalonEdit
 {

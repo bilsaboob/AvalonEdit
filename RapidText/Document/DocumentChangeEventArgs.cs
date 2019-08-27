@@ -48,8 +48,8 @@ namespace RapidText.Document
 				return map;
 			}
 		}
-		
-		internal OffsetChangeMapEntry CreateSingleChangeMapEntry()
+
+		public OffsetChangeMapEntry CreateSingleChangeMapEntry()
 		{
 			return new OffsetChangeMapEntry(this.Offset, this.RemovalLength, this.InsertionLength);
 		}
@@ -57,7 +57,7 @@ namespace RapidText.Document
 		/// <summary>
 		/// Gets the OffsetChangeMap, or null if the default offset map (=single replacement) is being used.
 		/// </summary>
-		internal OffsetChangeMap OffsetChangeMapOrNull {
+		public OffsetChangeMap OffsetChangeMapOrNull {
 			get {
 				return offsetChangeMap;
 			}

@@ -22,6 +22,7 @@ using System.Windows;
 using ICSharpCode.NRefactory.Editor;
 using ICSharpCode.AvalonEdit.Editing;
 using RapidText.Document;
+using RapidTextExt.Document;
 using TextUtilities = RapidText.Document.TextUtilities;
 
 namespace ICSharpCode.AvalonEdit.Snippets

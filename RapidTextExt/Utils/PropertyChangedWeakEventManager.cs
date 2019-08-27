@@ -18,7 +18,7 @@
 
 using System.ComponentModel;
 
-namespace RapidText.Utils
+namespace RapidTextExt.Utils
 {
 	/// <summary>
 	/// WeakEventManager for INotifyPropertyChanged.PropertyChanged.

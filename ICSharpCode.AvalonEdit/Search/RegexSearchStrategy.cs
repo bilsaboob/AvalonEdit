@@ -24,6 +24,7 @@ using System.Text.RegularExpressions;
 using System.Windows.Documents;
 using ICSharpCode.NRefactory.Editor;
 using RapidText.Document;
+using RapidTextExt.Document;
 
 namespace ICSharpCode.AvalonEdit.Search
 {
@@ -55,7 +56,7 @@ namespace ICSharpCode.AvalonEdit.Search
 		
 		static bool IsWordBorder(ITextSource document, int offset)
 		{
-			return TextUtilities.GetNextCaretPosition(document, offset - 1, LogicalDirection.Forward, CaretPositioningMode.WordBorder) == offset;
+			return TextUtilitiesExt.GetNextCaretPosition(document, offset - 1, LogicalDirection.Forward, CaretPositioningMode.WordBorder) == offset;
 		}
 		
 		public ISearchResult FindNext(ITextSource document, int offset, int length)

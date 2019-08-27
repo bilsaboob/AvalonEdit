@@ -62,6 +62,11 @@ namespace RapidText.Document
 				_verifyAccess = prevVerifyAccess;
 			}
 		}
+
+		public void VerifyAccess(bool verificationEnabled)
+		{
+			_verifyAccess = verificationEnabled;
+		}
 		
 		/// <summary>
 		/// Verifies that the current thread is the documents owner thread.
@@ -266,6 +271,7 @@ namespace RapidText.Document
 		{
 			get
 			{
+				var prevVerifyAccess = _verifyAccess;
 				try
 				{
 					_verifyAccess = false;
@@ -273,7 +279,7 @@ namespace RapidText.Document
 				}
 				finally
 				{
-					_verifyAccess = true;
+					_verifyAccess = prevVerifyAccess;
 				}
 			}
 		}

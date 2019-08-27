@@ -36,6 +36,8 @@ using ICSharpCode.NRefactory;
 using ICSharpCode.NRefactory.Editor;
 using RapidText.Document;
 using RapidText.Utils;
+using RapidTextExt.Document;
+using RapidTextExt.Utils;
 using TextRange = RapidText.TextRange;
 
 namespace ICSharpCode.AvalonEdit.Editing

@@ -31,6 +31,7 @@ using ICSharpCode.AvalonEdit;
 using ICSharpCode.AvalonEdit.Rendering;
 using ICSharpCode.AvalonEdit.Utils;
 using RapidText.Utils;
+using RapidTextExt.Utils;
 using Draw = System.Drawing;
 
 namespace ICSharpCode.AvalonEdit.Editing

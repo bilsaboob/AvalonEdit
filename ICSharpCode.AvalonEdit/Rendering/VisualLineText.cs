@@ -22,6 +22,7 @@ using System.Windows.Documents;
 using System.Windows.Media.TextFormatting;
 using ICSharpCode.AvalonEdit.Utils;
 using RapidText.Document;
+using RapidTextExt.Document;
 
 namespace ICSharpCode.AvalonEdit.Rendering
 {
@@ -126,7 +127,7 @@ namespace ICSharpCode.AvalonEdit.Rendering
 		public override int GetNextCaretPosition(int visualColumn, LogicalDirection direction, CaretPositioningMode mode)
 		{
 			int textOffset = parentVisualLine.StartOffset + this.RelativeTextOffset;
-			int pos = TextUtilities.GetNextCaretPosition(parentVisualLine.Document, textOffset + visualColumn - this.VisualColumn, direction, mode);
+			int pos = TextUtilitiesExt.GetNextCaretPosition(parentVisualLine.Document, textOffset + visualColumn - this.VisualColumn, direction, mode);
 			if (pos < textOffset || pos > textOffset + this.DocumentLength)
 				return -1;
 			else

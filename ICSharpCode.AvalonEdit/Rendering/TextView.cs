@@ -36,6 +36,9 @@ using ICSharpCode.AvalonEdit.Utils;
 using RapidText;
 using RapidText.Document;
 using RapidText.Utils;
+using RapidTextExt.Document;
+using RapidTextExt.Utils;
+using ExtensionMethods = RapidText.Utils.ExtensionMethods;
 
 namespace ICSharpCode.AvalonEdit.Rendering
 {
@@ -955,7 +958,7 @@ namespace ICSharpCode.AvalonEdit.Rendering
 			if (availableSize.Width > 32000)
 				availableSize.Width = 32000;
 			
-			if (!canHorizontallyScroll && !availableSize.Width.IsClose(lastAvailableSize.Width))
+			if (!canHorizontallyScroll && !ExtensionMethods.IsClose(availableSize.Width, lastAvailableSize.Width))
 				ClearVisualLines();
 			lastAvailableSize = availableSize;
 			
@@ -1101,7 +1104,7 @@ namespace ICSharpCode.AvalonEdit.Rendering
 			p.typeface = this.CreateTypeface();
 			p.fontRenderingEmSize = FontSize;
 			p.foregroundBrush = (Brush)GetValue(Control.ForegroundProperty);
-			ExtensionMethods.CheckIsFrozen(p.foregroundBrush);
+			ExtensionMethodsExt.CheckIsFrozen(p.foregroundBrush);
 			p.cultureInfo = CultureInfo.CurrentCulture;
 			return p;
 		}
@@ -1140,7 +1143,7 @@ namespace ICSharpCode.AvalonEdit.Rendering
 				// Check whether the lines are collapsed correctly:
 				double firstLinePos = heightTree.GetVisualPosition(visualLine.FirstDocumentLine.NextLine);
 				double lastLinePos = heightTree.GetVisualPosition(visualLine.LastDocumentLine.NextLine ?? visualLine.LastDocumentLine);
-				if (!firstLinePos.IsClose(lastLinePos)) {
+				if (!ExtensionMethods.IsClose(firstLinePos, lastLinePos)) {
 					for (int i = visualLine.FirstDocumentLine.LineNumber + 1; i <= visualLine.LastDocumentLine.LineNumber; i++) {
 						if (!heightTree.GetIsCollapsed(i))
 							throw new InvalidOperationException("Line " + i + " was skipped by a VisualLineElementGenerator, but it is not collapsed.");
@@ -1642,7 +1645,7 @@ namespace ICSharpCode.AvalonEdit.Rendering
 		void IScrollInfo.SetHorizontalOffset(double offset)
 		{
 			offset = ValidateVisualOffset(offset);
-			if (!scrollOffset.X.IsClose(offset)) {
+			if (!ExtensionMethods.IsClose(scrollOffset.X, offset)) {
 				SetScrollOffset(new Vector(offset, scrollOffset.Y));
 				InvalidateVisual();
 				textLayer.InvalidateVisual();
@@ -1652,7 +1655,7 @@ namespace ICSharpCode.AvalonEdit.Rendering
 		void IScrollInfo.SetVerticalOffset(double offset)
 		{
 			offset = ValidateVisualOffset(offset);
-			if (!scrollOffset.Y.IsClose(offset)) {
+			if (!ExtensionMethods.IsClose(scrollOffset.Y, offset)) {
 				SetScrollOffset(new Vector(scrollOffset.X, offset));
 				InvalidateMeasure(DispatcherPriority.Normal);
 			}

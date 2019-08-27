@@ -22,6 +22,7 @@ using System.Windows.Controls;
 using ICSharpCode.AvalonEdit.Editing;
 using ICSharpCode.AvalonEdit.Utils;
 using RapidText.Utils;
+using RapidTextExt.Utils;
 
 namespace ICSharpCode.AvalonEdit.CodeCompletion
 {

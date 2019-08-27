@@ -29,6 +29,7 @@ using ICSharpCode.AvalonEdit.Utils;
 using ICSharpCode.NRefactory.Editor;
 using RapidText.Document;
 using RapidText.Utils;
+using RapidTextExt.Utils;
 
 namespace ICSharpCode.AvalonEdit.CodeCompletion
 {

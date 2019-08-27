@@ -22,6 +22,7 @@ using System.Windows.Documents;
 using System.Windows.Automation.Text;
 using System.Diagnostics;
 using RapidText.Document;
+using RapidTextExt.Document;
 
 namespace ICSharpCode.AvalonEdit.Editing
 {
@@ -122,10 +123,10 @@ namespace ICSharpCode.AvalonEdit.Editing
 
 		private void ExpandToEnclosingUnit(CaretPositioningMode mode)
 		{
-			int start = TextUtilities.GetNextCaretPosition(doc, segment.Offset + 1, LogicalDirection.Backward, mode);
+			int start = TextUtilitiesExt.GetNextCaretPosition(doc, segment.Offset + 1, LogicalDirection.Backward, mode);
 			if (start < 0)
 				return;
-			int end = TextUtilities.GetNextCaretPosition(doc, start, LogicalDirection.Forward, mode);
+			int end = TextUtilitiesExt.GetNextCaretPosition(doc, start, LogicalDirection.Forward, mode);
 			if (end < 0)
 				return;
 			segment = new AnchorSegment(doc, start, end - start);
@@ -244,7 +245,7 @@ namespace ICSharpCode.AvalonEdit.Editing
 			var direction = count < 0 ? LogicalDirection.Backward : LogicalDirection.Forward;
 			count = Math.Abs(count);
 			for (int i = 0; i < count; i++) {
-				int newOffset = TextUtilities.GetNextCaretPosition(doc, offset, direction, mode);
+				int newOffset = TextUtilitiesExt.GetNextCaretPosition(doc, offset, direction, mode);
 				if (newOffset == offset || newOffset < 0)
 					break;
 				offset = newOffset;

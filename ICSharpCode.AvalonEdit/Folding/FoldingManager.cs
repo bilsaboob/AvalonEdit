@@ -26,6 +26,7 @@ using ICSharpCode.AvalonEdit.Rendering;
 using ICSharpCode.AvalonEdit.Utils;
 using RapidText.Document;
 using RapidText.Utils;
+using RapidTextExt.Document;
 
 namespace ICSharpCode.AvalonEdit.Folding
 {

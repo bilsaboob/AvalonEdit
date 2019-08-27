@@ -24,6 +24,7 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.TextFormatting;
 using RapidText.Utils;
+using RapidTextExt.Utils;
 
 namespace ICSharpCode.AvalonEdit.Utils
 {

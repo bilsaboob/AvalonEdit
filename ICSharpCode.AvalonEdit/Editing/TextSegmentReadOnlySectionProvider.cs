@@ -19,6 +19,7 @@
 using System;
 using System.Collections.Generic;
 using RapidText.Document;
+using RapidTextExt.Document;
 
 #if NREFACTORY
 using ICSharpCode.NRefactory.Editor;
