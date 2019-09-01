@@ -2,14 +2,13 @@
 
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0</TargetFrameworks>
-    <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <PackageId></PackageId>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
-    <Authors>RSharp</Authors>
+    <Authors>Rapid</Authors>
     <Version>0.1</Version>
     <Company></Company>
     <Description></Description>
-    <Copyright>RSharp</Copyright>
+    <Copyright>RapidText</Copyright>
     <PackageTags></PackageTags>
     <NeutralLanguage>en-us</NeutralLanguage>
     <PackageProjectUrl></PackageProjectUrl>
@@ -18,11 +17,14 @@
     <PackageReleaseNotes></PackageReleaseNotes>
     <AssemblyVersion>0.1.0.0</AssemblyVersion>
     <FileVersion>0.1.0.0</FileVersion>
-    <GenerateDocumentationFile>True</GenerateDocumentationFile>
+    <GenerateDocumentationFile>False</GenerateDocumentationFile>
     <SignAssembly>false</SignAssembly>
-    <AssemblyOriginatorKeyFile>../LanguageServer.snk</AssemblyOriginatorKeyFile>
     <LangVersion>7.3</LangVersion>
     <Product />
   </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\rapid\src\Rapid\Rapid.csproj" />
+  </ItemGroup>
 
 </Project>

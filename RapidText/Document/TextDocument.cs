@@ -24,6 +24,7 @@ using System.ComponentModel.Design;
 using System.Diagnostics;
 using System.Globalization;
 using System.Threading;
+using System.Threading.Tasks;
 using RapidText.IO;
 using RapidText.Utils;
 
@@ -44,6 +45,8 @@ namespace RapidText.Document
 	/// </remarks>
 	public class TextDocument : IDocument, INotifyPropertyChanged
 	{
+		private ITextAccess _textAccess;
+
 		#region Thread ownership
 		readonly object lockObject = new object();
 		Thread owner = Thread.CurrentThread;
@@ -56,6 +59,20 @@ namespace RapidText.Document
 			{
 				_verifyAccess = false;
 				action();
+			}
+			finally
+			{
+				_verifyAccess = prevVerifyAccess;
+			}
+		}
+
+		public T UnsafeAccess<T>(Func<T> func)
+		{
+			var prevVerifyAccess = _verifyAccess;
+			try
+			{
+				_verifyAccess = false;
+				return func();
 			}
 			finally
 			{
@@ -271,16 +288,17 @@ namespace RapidText.Document
 		{
 			get
 			{
-				var prevVerifyAccess = _verifyAccess;
-				try
+				string completeText = cachedText != null ? (cachedText.Target as string) : null;
+				if (completeText == null)
 				{
-					_verifyAccess = false;
-					return Text;
+					completeText = rope.ToString();
+					cachedText = new WeakReference(completeText);
 				}
-				finally
-				{
-					_verifyAccess = prevVerifyAccess;
-				}
+				return completeText;
+			}
+			set
+			{
+				UnsafeAccess(() => Replace(0, rope.Length, value ?? ""));
 			}
 		}
 
@@ -450,7 +468,39 @@ namespace RapidText.Document
 			rope.WriteTo(writer, offset, length);
 		}
 		#endregion
-		
+
+		#region Text access operations
+		public void WithAccess(ITextAccess textAccess)
+		{
+			_textAccess = textAccess;
+		}
+
+		public virtual Task<T> ReadAccess<T>(Func<TextDocument, T> action)
+		{
+			if (_textAccess == null)
+			{
+				return Task.FromResult(UnsafeAccess(()=>action(this)));
+			}
+			else
+			{
+				return _textAccess.ReadAccess(action);
+			}
+		}
+
+		public virtual Task WriteAccess(Action<TextDocument> action)
+		{
+			if (_textAccess == null)
+			{
+				UnsafeAccess(() => action(this));
+				return Task.CompletedTask;
+			}
+			else
+			{
+				return _textAccess.WriteAccess(action);
+			}
+		}
+		#endregion
+
 		#region BeginUpdate / EndUpdate
 		int beginUpdateCount;
 		

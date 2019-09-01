@@ -55,6 +55,10 @@
     <Compile Include="Utils\WeakEventManagerBase.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\rapid\src\Rapid\Rapid.csproj">
+      <Project>{14114016-9920-4a85-b4b8-a6957a9aa27d}</Project>
+      <Name>Rapid</Name>
+    </ProjectReference>
     <ProjectReference Include="..\RapidText\RapidText.csproj">
       <Project>{129693a6-1719-4da8-aaf4-8fd166a7a59f}</Project>
       <Name>RapidText</Name>
