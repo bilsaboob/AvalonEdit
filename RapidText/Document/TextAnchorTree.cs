@@ -30,7 +30,7 @@ namespace RapidText.Document
 	/// <summary>
 	/// A tree of TextAnchorNodes.
 	/// </summary>
-	sealed class TextAnchorTree
+	public sealed class TextAnchorTree
 	{
 		// The text anchor tree has difficult requirements:
 		// - it must QUICKLY update the offset in all anchors whenever there is a document change
