@@ -155,7 +155,7 @@ namespace ICSharpCode.AvalonEdit.Highlighting
 		
 		bool isInHighlightingGroup;
 		
-		void textView_VisualLineConstructionStarting(object sender, VisualLineConstructionStartEventArgs e)
+		void textView_VisualLineConstructionStarting(object sender, VisualLineConstructionContext e)
 		{
 			if (highlighter != null) {
 				// Force update of highlighting state up to the position where we start generating visual lines.

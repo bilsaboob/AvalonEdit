@@ -29,6 +29,6 @@ namespace ICSharpCode.AvalonEdit.Rendering
 		/// <summary>
 		/// Applies the transformation to the specified list of visual line elements.
 		/// </summary>
-		void Transform(ITextRunConstructionContext context, IList<VisualLineElement> elements);
+		void Transform(VisualLineConstructionContext context, ITextRunConstructionContext textRunContext, IList<VisualLineElement> elements);
 	}
 }

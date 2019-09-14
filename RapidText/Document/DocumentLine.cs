@@ -50,7 +50,17 @@ namespace RapidText.Document
 		readonly TextDocument document;
 		#endif
 		
-		internal bool isDeleted;
+		internal bool _isDeleted;
+
+		internal bool isDeleted
+		{
+			get => _isDeleted;
+			set
+			{
+				_isDeleted = value;
+				if(value) _data?.Clear();
+			}
+		}
 		
 		internal DocumentLine(TextDocument document)
 		{

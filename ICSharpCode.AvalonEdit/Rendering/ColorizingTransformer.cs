@@ -37,7 +37,7 @@ namespace ICSharpCode.AvalonEdit.Rendering
 		/// <see cref="IVisualLineTransformer.Transform"/> implementation.
 		/// Sets <see cref="CurrentElements"/> and calls <see cref="Colorize"/>.
 		/// </summary>
-		public void Transform(ITextRunConstructionContext context, IList<VisualLineElement> elements)
+		public void Transform(VisualLineConstructionContext context, ITextRunConstructionContext textRunContext, IList<VisualLineElement> elements)
 		{
 			if (elements == null)
 				throw new ArgumentNullException("elements");
@@ -45,16 +45,23 @@ namespace ICSharpCode.AvalonEdit.Rendering
 				throw new InvalidOperationException("Recursive Transform() call");
 			this.CurrentElements = elements;
 			try {
-				Colorize(context);
+				Colorize(context, textRunContext);
 			} finally {
 				this.CurrentElements = null;
 			}
 		}
-		
+
+		protected virtual void Colorize(VisualLineConstructionContext context, ITextRunConstructionContext textRunContext)
+		{
+			Colorize(textRunContext);
+		}
+
 		/// <summary>
 		/// Performs the colorization.
 		/// </summary>
-		protected abstract void Colorize(ITextRunConstructionContext context);
+		protected virtual void Colorize(ITextRunConstructionContext textRunContext)
+		{
+		}
 		
 		/// <summary>
 		/// Changes visual element properties.

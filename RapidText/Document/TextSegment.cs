@@ -152,7 +152,7 @@ namespace RapidText.Document
 		/// <remarks>
 		/// Setting the end offset will change the length, the start offset will stay constant.
 		/// </remarks>
-		public int EndOffset {
+		public virtual int EndOffset {
 			get {
 				return StartOffset + Length;
 			}
@@ -170,7 +170,7 @@ namespace RapidText.Document
 		/// <remarks>
 		/// Setting the length will change the end offset, the start offset will stay constant.
 		/// </remarks>
-		public int Length {
+		public virtual int Length {
 			get {
 				return segmentLength;
 			}
@@ -251,8 +251,16 @@ namespace RapidText.Document
 				}
 			}
 		}
-		
-		#if DEBUG
+
+		public void SetRange(TextRange range)
+		{
+			StartOffset = range.StartOffset;
+			Length = range.Length;
+		}
+
+		public TextRange ToTextRange() => new TextRange(StartOffset, EndOffset);
+
+#if DEBUG
 		public string ToDebugString()
 		{
 			return "[nodeLength=" + nodeLength + " totalNodeLength=" + totalNodeLength

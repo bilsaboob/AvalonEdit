@@ -17,48 +17,26 @@
 // DEALINGS IN THE SOFTWARE.
 
 using System;
+using System.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using RapidText.Document;
+using System.Diagnostics;
+using System.Globalization;
+using System.Linq;
 
-namespace ICSharpCode.AvalonEdit.Rendering
+namespace RapidText.Document
 {
-	/// <summary>
-	/// EventArgs for the <see cref="TextView.VisualLineConstructionStarting"/> event.
-	/// </summary>
-	public class VisualLineConstructionContext : EventArgs
+	public sealed partial class DocumentLine : IDocumentLine
 	{
 		private ConcurrentDictionary<string, object> _data;
-		
-		/// <summary>
-		/// Creates a new VisualLineConstructionStartEventArgs instance.
-		/// </summary>
-		public VisualLineConstructionContext(TextView textView, Guid id, DocumentLine firstLineInView, ITextSourceVersion textVersion)
-		{
-			this.TextView = textView;
-			this.FirstLineInView = firstLineInView;
-			this.Id = id;
-			this.TextVersion = textVersion;
-		}
-
-		/// <summary>
-		/// Gets/Sets the first line that is visible in the TextView.
-		/// </summary>
-		public DocumentLine FirstLineInView { get; private set; }
-
-		public Guid Id { get; private set; }
-
-		public ITextSourceVersion TextVersion { get; private set; }
-
-		public TextView TextView { get; private set; }
 
 		public void Set<T>(string id, T value)
 		{
-			if(_data == null)
+			if (_data == null)
 				_data = new ConcurrentDictionary<string, object>();
 			_data[id] = value;
 		}
-		
+
 		public bool TryGet<T>(string id, out T value)
 		{
 			value = default(T);
@@ -77,11 +55,28 @@ namespace ICSharpCode.AvalonEdit.Rendering
 			}
 		}
 
+		public IEnumerable<object> TryGetAllStartingWith(string id)
+		{
+			if(_data == null) yield break;
+
+			foreach (var key in _data.Keys.ToList())
+			{
+				if(!key.StartsWith(id)) continue;
+				if (_data.TryGetValue(key, out var val))
+					yield return val;
+			}
+		}
+
 		public T GetOrAdd<T>(string id, Func<T> defaultFn)
 		{
-			if(_data == null)
+			if (_data == null)
 				_data = new ConcurrentDictionary<string, object>();
-			return (T)_data.GetOrAdd(id, _=>defaultFn());
+			return (T) _data.GetOrAdd(id, _ => defaultFn());
+		}
+
+		public bool Remove(string id)
+		{
+			return _data.TryRemove(id, out _);
 		}
 	}
 }

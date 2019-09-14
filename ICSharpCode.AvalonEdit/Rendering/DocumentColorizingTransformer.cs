@@ -36,29 +36,31 @@ namespace ICSharpCode.AvalonEdit.Rendering
 		/// <summary>
 		/// Gets the current ITextRunConstructionContext.
 		/// </summary>
-		protected ITextRunConstructionContext CurrentContext { get; private set; }
-		
+		protected ITextRunConstructionContext CurrentContext { get; set; }
+		protected VisualLineConstructionContext Context { get; set; }
+
 		/// <inheritdoc/>
-		protected override void Colorize(ITextRunConstructionContext context)
+		protected override void Colorize(VisualLineConstructionContext context, ITextRunConstructionContext textRunContext)
 		{
-			if (context == null)
-				throw new ArgumentNullException("context");
-			this.CurrentContext = context;
+			if (textRunContext == null)
+				throw new ArgumentNullException("textRunContext");
+			this.CurrentContext = textRunContext;
+			this.Context = context;
 			
-			currentDocumentLine = context.VisualLine.FirstDocumentLine;
+			currentDocumentLine = textRunContext.VisualLine.FirstDocumentLine;
 			firstLineStart = currentDocumentLineStartOffset = currentDocumentLine.Offset;
 			currentDocumentLineEndOffset = currentDocumentLineStartOffset + currentDocumentLine.Length;
 			int currentDocumentLineTotalEndOffset = currentDocumentLineStartOffset + currentDocumentLine.TotalLength;
 			
-			if (context.VisualLine.FirstDocumentLine == context.VisualLine.LastDocumentLine) {
+			if (textRunContext.VisualLine.FirstDocumentLine == textRunContext.VisualLine.LastDocumentLine) {
 				ColorizeLine(currentDocumentLine);
 			} else {
 				ColorizeLine(currentDocumentLine);
 				// ColorizeLine modifies the visual line elements, loop through a copy of the line elements
-				foreach (VisualLineElement e in context.VisualLine.Elements.ToArray()) {
+				foreach (VisualLineElement e in textRunContext.VisualLine.Elements.ToArray()) {
 					int elementOffset = firstLineStart + e.RelativeTextOffset;
 					if (elementOffset >= currentDocumentLineTotalEndOffset) {
-						currentDocumentLine = context.Document.GetLineByOffset(elementOffset);
+						currentDocumentLine = textRunContext.Document.GetLineByOffset(elementOffset);
 						currentDocumentLineStartOffset = currentDocumentLine.Offset;
 						currentDocumentLineEndOffset = currentDocumentLineStartOffset + currentDocumentLine.Length;
 						currentDocumentLineTotalEndOffset = currentDocumentLineStartOffset + currentDocumentLine.TotalLength;

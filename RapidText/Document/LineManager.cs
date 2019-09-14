@@ -102,6 +102,9 @@ namespace RapidText.Document
 		#endregion
 		
 		#region Rebuild
+		/// <summary>
+		/// Completely rebuilding the lines in the document, usually happens when the entire document text is replaced and on the first initial build phase.
+		/// </summary>
 		public void Rebuild()
 		{
 			// keep the first document line
@@ -134,6 +137,9 @@ namespace RapidText.Document
 		#endregion
 		
 		#region Remove
+		/// <summary>
+		/// Removes a text with a length starting from the given offset, usually triggered when text in a document is deleted / replaced... this can affect the text in one or many lines...
+		/// </summary>
 		public void Remove(int offset, int length)
 		{
 			Debug.Assert(length >= 0);

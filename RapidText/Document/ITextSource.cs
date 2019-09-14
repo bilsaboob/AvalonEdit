@@ -254,6 +254,31 @@ namespace RapidText.Document
 
 			return offset;
 		}
+
+		public static void UpdateRange(this ITextSourceVersion fromVersion, ITextSourceVersion toVersion, ref int startOffset, ref int endOffset)
+		{
+			var age = fromVersion.CompareAge(toVersion);
+			if (age > 0)
+			{
+				// from version is newer than the to version!
+				var changes = fromVersion.GetChangesTo(toVersion);
+				foreach (var change in changes)
+				{
+					startOffset = change.GetNewOffset(startOffset);
+					endOffset = change.GetNewOffset(endOffset);
+				}
+			}
+			else if (age < 0)
+			{
+				// from version is older than the to version!
+				var changes = fromVersion.GetChangesTo(toVersion);
+				foreach (var change in changes)
+				{
+					startOffset = change.GetNewOffset(startOffset);
+					endOffset = change.GetNewOffset(endOffset);
+				}
+			}
+		}
 	}
 
 	/// <summary>

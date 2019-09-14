@@ -17,7 +17,9 @@
 // DEALINGS IN THE SOFTWARE.
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.TextFormatting;
@@ -56,6 +58,8 @@ namespace ICSharpCode.AvalonEdit.Rendering
 				return default(T);
 			}
 		}
+
+		public List<object> GetAllValues() => _properties.Values.ToList();
 
 		public bool TryGetValue<T>(string key, out T value)
 		{

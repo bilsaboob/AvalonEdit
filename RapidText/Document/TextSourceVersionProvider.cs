@@ -130,6 +130,11 @@ namespace RapidText.Document
 				}
 				return offset;
 			}
+
+			public override string ToString()
+			{
+				return $"v-{id}";
+			}
 		}
 	}
 	#endif

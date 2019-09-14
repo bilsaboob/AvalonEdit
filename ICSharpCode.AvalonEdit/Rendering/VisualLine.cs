@@ -221,11 +221,11 @@ namespace ICSharpCode.AvalonEdit.Rendering
 			Debug.Assert(textOffset == LastDocumentLine.EndOffset - FirstDocumentLine.Offset);
 		}
 		
-		internal void RunTransformers(ITextRunConstructionContext context, IVisualLineTransformer[] transformers)
+		internal void RunTransformers(VisualLineConstructionContext context, ITextRunConstructionContext textRunContext, IVisualLineTransformer[] transformers)
 		{
 			Debug.Assert(phase == LifetimePhase.Transforming);
 			foreach (IVisualLineTransformer transformer in transformers) {
-				transformer.Transform(context, elements);
+				transformer.Transform(context, textRunContext, elements);
 			}
 			// For some strange reason, WPF requires that either all or none of the typography properties are set.
 			if (elements.Any(e => e.TextRunProperties.TypographyProperties != null)) {

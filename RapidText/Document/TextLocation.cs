@@ -241,7 +241,25 @@ namespace RapidText.Document
 		/// <remarks>EndOffset = Offset + Length;</remarks>
 		int EndOffset { get; }
 	}
-	
+
+	public interface ISegmentWithOwner : ISegment
+	{
+		object Owner { get; }
+	}
+
+	public interface ISegmentWithVersion : ISegment
+	{
+		ITextSourceVersion Version { get; }
+	}
+
+	public interface IUpdateableSegment : ISegmentWithVersion
+	{
+		ITextSourceVersion SourceVersion { get; }
+		ITextSourceVersion UpdatedVersion { get; }
+
+		bool Update(TextDocument document, ITextSourceVersion newVersion);
+	}
+
 	/// <summary>
 	/// Extension methods for <see cref="ISegment"/>.
 	/// </summary>

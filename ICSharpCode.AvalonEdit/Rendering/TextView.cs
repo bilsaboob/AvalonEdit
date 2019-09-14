@@ -24,6 +24,7 @@ using System.ComponentModel.Design;
 using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
@@ -42,6 +43,7 @@ using ExtensionMethods = RapidText.Utils.ExtensionMethods;
 
 namespace ICSharpCode.AvalonEdit.Rendering
 {
+	
 	/// <summary>
 	/// A virtualizing panel producing+showing <see cref="VisualLine"/>s for a <see cref="TextDocument"/>.
 	/// 
@@ -89,6 +91,8 @@ namespace ICSharpCode.AvalonEdit.Rendering
 
 		#endregion
 		
+		public bool HasRendered { get; protected set; }
+
 		#region Document Property
 		/// <summary>
 		/// Document property.
@@ -447,6 +451,13 @@ namespace ICSharpCode.AvalonEdit.Rendering
 
 		public TextRange GetVisualRange()
 		{
+			ITextSourceVersion textVersion;
+			return GetVisualRange(out textVersion);
+		} 
+		public TextRange GetVisualRange(out ITextSourceVersion textVersion)
+		{
+			textVersion = null;
+
 			if (!VisualLinesValid)
 			{
 				if (Dispatcher.CheckAccess())
@@ -473,19 +484,23 @@ namespace ICSharpCode.AvalonEdit.Rendering
 			}
 			else if (visualLines.Count == 1)
 			{
-				var firstDocLine = visualLines[0].FirstDocumentLine;
+				var firstVisualLine = visualLines[0];
+				textVersion = firstVisualLine.Document?.Version;
+				var firstDocLine = firstVisualLine.FirstDocumentLine;
 				start = firstDocLine.Offset;
 				end = firstDocLine.EndOffset;
 			}
 			else
 			{
-				start = visualLines[0].FirstDocumentLine.Offset;
+				var firstVisualLine = visualLines[0];
+				textVersion = firstVisualLine.Document?.Version;
+				start = firstVisualLine.FirstDocumentLine.Offset;
 				end = visualLines[visualLines.Count - 1].LastDocumentLine.EndOffset;
 			}
 
 			return new TextRange(start, end);
 		}
-
+		
 		/// <inheritdoc/>
 		protected override System.Collections.IEnumerator LogicalChildren {
 			get {
@@ -720,6 +735,35 @@ namespace ICSharpCode.AvalonEdit.Rendering
 				InvalidateMeasure(redrawPriority);
 			}
 		}
+
+		public void RedrawImmediate(int offset, int length, ITextSourceVersion textVersion)
+		{
+			Debug.WriteLine($"RedrawImmediate: {textVersion}");
+			bool changedSomethingBeforeOrInLine = false;
+			for (int i = 0; i < allVisualLines.Count; i++)
+			{
+				VisualLine visualLine = allVisualLines[i];
+				int lineStart = visualLine.FirstDocumentLine.Offset;
+				int lineEnd = visualLine.LastDocumentLine.Offset + visualLine.LastDocumentLine.TotalLength;
+				if (offset <= lineEnd)
+				{
+					changedSomethingBeforeOrInLine = true;
+					if (offset + length >= lineStart)
+					{
+						allVisualLines.RemoveAt(i--);
+						DisposeVisualLine(visualLine);
+					}
+				}
+			}
+			if (changedSomethingBeforeOrInLine)
+			{
+				// Repaint not only when something in visible area was changed, but also when anything in front of it
+				// was changed. We might have to redraw the line number margin. Or the highlighting changed.
+				// However, we'll try to reuse the existing VisualLines.
+				Debug.WriteLine($"InvalidateMeasure: {textVersion}");
+				base.InvalidateMeasure();
+			}
+		}
 		
 		/// <summary>
 		/// Causes a known layer to redraw.
@@ -786,19 +830,21 @@ namespace ICSharpCode.AvalonEdit.Rendering
 		#region InvalidateMeasure(DispatcherPriority)
 		DispatcherOperation invalidateMeasureOperation;
 		
-		void InvalidateMeasure(DispatcherPriority priority)
+		DispatcherOperation InvalidateMeasure(DispatcherPriority priority, bool forceDispatcherAction = false)
 		{
-			if (priority >= DispatcherPriority.Render) {
-				if (invalidateMeasureOperation != null) {
-					invalidateMeasureOperation.Abort();
-					invalidateMeasureOperation = null;
+			var operation = invalidateMeasureOperation;
+			if (priority >= DispatcherPriority.Render && !forceDispatcherAction)
+			{
+				if (operation != null) {
+					operation.Abort();
+					operation = null;
 				}
 				base.InvalidateMeasure();
 			} else {
-				if (invalidateMeasureOperation != null) {
-					invalidateMeasureOperation.Priority = priority;
+				if (operation != null) {
+					operation.Priority = priority;
 				} else {
-					invalidateMeasureOperation = Dispatcher.BeginInvoke(
+					operation = Dispatcher.BeginInvoke(
 						priority,
 						new Action(
 							delegate {
@@ -809,6 +855,7 @@ namespace ICSharpCode.AvalonEdit.Rendering
 					);
 				}
 			}
+			return operation;
 		}
 		#endregion
 		
@@ -850,11 +897,20 @@ namespace ICSharpCode.AvalonEdit.Rendering
 				while (heightTree.GetIsCollapsed(documentLine.LineNumber)) {
 					documentLine = documentLine.PreviousLine;
 				}
-				
-				l = BuildVisualLine(documentLine,
-				                    globalTextRunProperties, paragraphProperties,
-				                    elementGenerators.ToArray(), lineTransformers.ToArray(),
-				                    lastAvailableSize);
+
+				var context = InvokeVisualLineConstructionStarting(documentLine, document.Version);
+				try
+				{
+					l = BuildVisualLine(context, documentLine,
+						globalTextRunProperties, paragraphProperties,
+						elementGenerators.ToArray(), lineTransformers.ToArray(),
+						lastAvailableSize);
+				}
+				finally
+				{
+					InvokeVisualLineConstructionFinished(context);
+				}
+			
 				allVisualLines.Add(l);
 				// update all visual top values (building the line might have changed visual top of other lines due to word wrapping)
 				foreach (var line in allVisualLines) {
@@ -863,6 +919,7 @@ namespace ICSharpCode.AvalonEdit.Rendering
 			}
 			return l;
 		}
+		
 		#endregion
 		
 		#region Visual Lines (fields and properties)
@@ -903,9 +960,9 @@ namespace ICSharpCode.AvalonEdit.Rendering
 		/// Occurs when the TextView is about to be measured and will regenerate its visual lines.
 		/// This event may be used to mark visual lines as invalid that would otherwise be reused.
 		/// </summary>
-		public event EventHandler<VisualLineConstructionStartEventArgs> VisualLineConstructionStarting;
+		public event EventHandler<VisualLineConstructionContext> VisualLineConstructionStarting;
 
-		public event EventHandler<VisualLineConstructionStartEventArgs> VisualLineConstructionFinished;
+		public event EventHandler<VisualLineConstructionContext> VisualLineConstructionFinished;
 
 		/// <summary>
 		/// Occurs when the TextView was measured and changed its visual lines.
@@ -1019,7 +1076,8 @@ namespace ICSharpCode.AvalonEdit.Rendering
 		/// <returns>Width the longest line</returns>
 		double CreateAndMeasureVisualLines(Size availableSize)
 		{
-			TextRunProperties globalTextRunProperties = CreateGlobalTextRunProperties();
+			var globalTextRunProperties = CreateGlobalTextRunProperties();
+
 			VisualLineTextParagraphProperties paragraphProperties = CreateParagraphProperties(globalTextRunProperties);
 			
 			Debug.WriteLine("Measure availableSize=" + availableSize + ", scrollOffset=" + scrollOffset);
@@ -1032,65 +1090,99 @@ namespace ICSharpCode.AvalonEdit.Rendering
 			
 			newVisualLines = new List<VisualLine>();
 
-			var constructionEventArgs = new VisualLineConstructionStartEventArgs(Guid.NewGuid(), firstLineInView);
-			VisualLineConstructionStarting?.Invoke(this, constructionEventArgs);
-
-#if DEBUG
-			var sw = Stopwatch.StartNew();
-#endif
-
-			var elementGeneratorsArray = elementGenerators.ToArray();
-			var lineTransformersArray = lineTransformers.ToArray();
-			var nextLine = firstLineInView;
 			double maxWidth = 0;
-			double yPos = -clippedPixelsOnTop;
-			while (yPos < availableSize.Height && nextLine != null) {
-				VisualLine visualLine = GetVisualLine(nextLine.LineNumber);
-				if (visualLine == null) {
-					visualLine = BuildVisualLine(nextLine,
-					                             globalTextRunProperties, paragraphProperties,
-					                             elementGeneratorsArray, lineTransformersArray,
-					                             availableSize);
-				}
-				
-				visualLine.VisualTop = scrollOffset.Y + yPos;
-				
-				nextLine = visualLine.LastDocumentLine.NextLine;
-				
-				yPos += visualLine.Height;
-				
-				foreach (TextLine textLine in visualLine.TextLines) {
-					if (textLine.WidthIncludingTrailingWhitespace > maxWidth)
-						maxWidth = textLine.WidthIncludingTrailingWhitespace;
-				}
-				
-				newVisualLines.Add(visualLine);
-			}
-			
-			foreach (VisualLine line in allVisualLines) {
-				Debug.Assert(line.IsDisposed == false);
-				if (!newVisualLines.Contains(line))
-					DisposeVisualLine(line);
-			}
-			
-			allVisualLines = newVisualLines;
-			
+
+			var context = InvokeVisualLineConstructionStarting(firstLineInView, document.Version);
+			try
+			{
 #if DEBUG
-			Debug.WriteLine($"Generated VisualLines {newVisualLines.Count} - {sw.ElapsedMilliseconds}ms");
+				var sw = Stopwatch.StartNew();
+#endif
+				var elementGeneratorsArray = elementGenerators.ToArray();
+				var lineTransformersArray = lineTransformers.ToArray();
+				var nextLine = firstLineInView;
+				double yPos = -clippedPixelsOnTop;
+				while (yPos < availableSize.Height && nextLine != null)
+				{
+					VisualLine visualLine = GetVisualLine(nextLine.LineNumber);
+					if (visualLine == null)
+					{
+						visualLine = BuildVisualLine(context, nextLine,
+							globalTextRunProperties, paragraphProperties,
+							elementGeneratorsArray, lineTransformersArray,
+							availableSize);
+					}
+
+					visualLine.VisualTop = scrollOffset.Y + yPos;
+
+					nextLine = visualLine.LastDocumentLine.NextLine;
+
+					yPos += visualLine.Height;
+
+					foreach (TextLine textLine in visualLine.TextLines)
+					{
+						if (textLine.WidthIncludingTrailingWhitespace > maxWidth)
+							maxWidth = textLine.WidthIncludingTrailingWhitespace;
+					}
+
+					newVisualLines.Add(visualLine);
+				}
+
+				foreach (VisualLine line in allVisualLines)
+				{
+					Debug.Assert(line.IsDisposed == false);
+					if (!newVisualLines.Contains(line))
+						DisposeVisualLine(line);
+				}
+
+				allVisualLines = newVisualLines;
+
+#if DEBUG
+				Debug.WriteLine($"Generated VisualLines {newVisualLines.Count} - {sw.ElapsedMilliseconds}ms");
 #endif
 
-			// visibleVisualLines = readonly copy of visual lines
-			visibleVisualLines = new ReadOnlyCollection<VisualLine>(newVisualLines.ToArray());
-			newVisualLines = null;
-
-			VisualLineConstructionFinished?.Invoke(this, constructionEventArgs);
-
+				// visibleVisualLines = readonly copy of visual lines
+				visibleVisualLines = new ReadOnlyCollection<VisualLine>(newVisualLines.ToArray());
+				newVisualLines = null;
+			}
+			finally
+			{
+				InvokeVisualLineConstructionFinished(context);
+			}
+			
 			if (allVisualLines.Any(line => line.IsDisposed)) {
 				throw new InvalidOperationException("A visual line was disposed even though it is still in use.\n" +
 				                                    "This can happen when Redraw() is called during measure for lines " +
 				                                    "that are already constructed.");
 			}
+			
 			return maxWidth;
+		}
+
+		private void InvokeVisualLineConstructionFinished(VisualLineConstructionContext constructionEventArgs)
+		{
+			try
+			{
+				VisualLineConstructionFinished?.Invoke(this, constructionEventArgs);
+			}
+			catch (Exception)
+			{
+			}
+		}
+
+		private VisualLineConstructionContext InvokeVisualLineConstructionStarting(DocumentLine firstLineInView, ITextSourceVersion documentVersion)
+		{
+			var constructionEventArgs = new VisualLineConstructionContext(this, Guid.NewGuid(), firstLineInView, documentVersion);
+			try
+			{
+				VisualLineConstructionStarting?.Invoke(this, constructionEventArgs);
+			}
+			catch (Exception)
+			{
+				// doesn't matter
+			}
+
+			return constructionEventArgs;
 		}
 		#endregion
 		
@@ -1118,7 +1210,8 @@ namespace ICSharpCode.AvalonEdit.Rendering
 			};
 		}
 		
-		VisualLine BuildVisualLine(DocumentLine documentLine,
+		VisualLine BuildVisualLine(VisualLineConstructionContext context, 
+		                           DocumentLine documentLine,
 		                           TextRunProperties globalTextRunProperties,
 		                           VisualLineTextParagraphProperties paragraphProperties,
 		                           VisualLineElementGenerator[] elementGeneratorsArray,
@@ -1152,7 +1245,7 @@ namespace ICSharpCode.AvalonEdit.Rendering
 				}
 			}
 			
-			visualLine.RunTransformers(textSource, lineTransformersArray);
+			visualLine.RunTransformers(context, textSource, lineTransformersArray);
 			
 			// now construct textLines:
 			int textOffset = 0;
@@ -1298,6 +1391,8 @@ namespace ICSharpCode.AvalonEdit.Rendering
 		/// <inheritdoc/>
 		protected override void OnRender(DrawingContext drawingContext)
 		{
+			HasRendered = true;
+
 			RenderBackground(drawingContext, KnownLayer.Background);
 			foreach (var line in visibleVisualLines) {
 				Brush currentBrush = null;
