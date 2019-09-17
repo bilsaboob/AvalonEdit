@@ -272,6 +272,9 @@
     </Compile>
     <Compile Include="Rendering\LinkElementGenerator.cs" />
     <Compile Include="Rendering\MouseHoverLogic.cs" />
+    <Compile Include="Rendering\Segments\SegmentsBuilder.cs" />
+    <Compile Include="Rendering\Segments\SegmentsCollection.cs" />
+    <Compile Include="Rendering\Segments\Extensions.cs" />
     <Compile Include="Rendering\SimpleTextSource.cs">
       <DependentUpon>FormattedTextElement.cs</DependentUpon>
     </Compile>

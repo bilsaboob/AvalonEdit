@@ -26,6 +26,11 @@ using ICSharpCode.NRefactory.Editor;
 namespace RapidText.Document
 {
 	/// <summary>
+	/// Null segment marker interface
+	/// </summary>
+	public interface INullSegment { }
+
+	/// <summary>
 	/// A segment that can be put into a <see cref="TextSegmentCollection{T}"/>.
 	/// </summary>
 	/// <remarks>
@@ -53,8 +58,10 @@ namespace RapidText.Document
 	/// <seealso cref="ISegment"/>
 	/// <seealso cref="AnchorSegment"/>
 	/// <seealso cref="TextSegmentCollection{T}"/>
-	public class TextSegment : ISegment
+	public class TextSegment : ISegment, IWithSegment
 	{
+		public ISegment Segment => this;
+
 		public ISegmentTree ownerTree;
 		public TextSegment left;
 		public TextSegment right;

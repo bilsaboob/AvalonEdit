@@ -17,6 +17,7 @@
 // DEALINGS IN THE SOFTWARE.
 
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
 
@@ -242,20 +243,24 @@ namespace RapidText.Document
 		int EndOffset { get; }
 	}
 
-	public interface ISegmentWithOwner : ISegment
+	public interface IWithSegment
 	{
-		object Owner { get; }
+		ISegment Segment { get; }
 	}
 
 	public interface ISegmentWithVersion : ISegment
 	{
-		ITextSourceVersion Version { get; }
+		ITextSourceVersion Version { get; set; }
 	}
 
 	public interface IUpdateableSegment : ISegmentWithVersion
 	{
-		ITextSourceVersion SourceVersion { get; }
-		ITextSourceVersion UpdatedVersion { get; }
+		ITextSourceVersion SourceVersion { get; set; }
+		ITextSourceVersion UpdatedVersion { get; set; }
+		
+		new int Offset { get; set; }
+		new int Length { get; set; }
+		new int EndOffset { get; set; }
 
 		bool Update(TextDocument document, ITextSourceVersion newVersion);
 	}
@@ -289,6 +294,169 @@ namespace RapidText.Document
 		{
 			return thisSegment != null && offset >= thisSegment.Offset && offset <= thisSegment.EndOffset;
 		}
+
+		/// <summary>
+		/// Finds the first segment within the [start, end] text range searching the segments list over the segments [segmentStartIndex, segmentEndIndex] range
+		/// </summary>
+		public static int FindFirstIndexInRange<T>(this IList<T> segments, int segmentStartIndex, int segmentEndIndex, int start, int end)
+			where T : IWithSegment
+		{
+			int low = segmentStartIndex;
+			var len = segmentEndIndex - 1;
+			int hi = len;
+
+			T item = default;
+			byte type = 0;
+			ISegment segment = null;
+
+			var index = -1;
+			var isMatch = false;
+
+			while (low <= hi)
+			{
+				index = low + (hi - low >> 1);
+				int comparison;
+
+				while (true)
+				{
+					segment = segments[index]?.Segment;
+					if (segment == null || segment is INullSegment)
+					{
+						if (low == hi) break;
+						index++;
+						continue;
+					}
+
+					break;
+				}
+
+				if (segment == null) break;
+
+				if (segment.Offset < start && segment.EndOffset < start)
+				{
+					comparison = -1;
+				}
+				else if (segment.Offset > end && segment.EndOffset > end)
+				{
+					comparison = 1;
+				}
+				else
+				{
+					isMatch = true;
+					break;
+				}
+
+				if (comparison < 0)
+					low = index + 1;
+				else
+					hi = index - 1;
+			}
+
+			if (!isMatch) return -1;
+
+			for (var i = index - 1; i >= 0; --i)
+			{
+				segment = segments[i]?.Segment;
+				if (segment == null) continue;
+
+				if (segment.Offset < start && segment.EndOffset < start)
+				{
+					break;
+				}
+
+				if (segment.Offset > end && segment.EndOffset > end)
+				{
+					break;
+				}
+
+				// we have an earlier match...
+				index = i;
+			}
+
+			return index;
+		}
+
+		/// <summary>
+		/// Finds the first segment within the [start, end] text range searching the segments list over the segments [segmentStartIndex, segmentEndIndex] range
+		/// </summary>
+		public static int FindFirstIndexInRange<T>(this IList<T> segments, int segmentStartIndex, int segmentEndIndex, int start, int end, Func<T, TextRange> itemRangeFunc)
+		{
+			int low = segmentStartIndex;
+			var len = segmentEndIndex - 1;
+			int hi = len;
+
+			T item = default;
+			byte type = 0;
+			var itemRange = TextRange.Empty;
+
+			var index = -1;
+			var isMatch = false;
+
+			while (low <= hi)
+			{
+				index = low + (hi - low >> 1);
+				int comparison;
+
+				while (true)
+				{
+					itemRange = itemRangeFunc(segments[index]);
+					if (itemRange.IsEmpty)
+					{
+						if (low == hi) break;
+						index++;
+						continue;
+					}
+				
+					break;
+				}
+				
+				if(itemRange.IsEmpty) break;
+				
+				if (itemRange.StartOffset < start && itemRange.EndOffset < start)
+				{
+					comparison = -1;
+				}
+				else if (itemRange.StartOffset > end && itemRange.EndOffset > end)
+				{
+					comparison = 1;
+				}
+				else
+				{
+					isMatch = true;
+					break;
+				}
+
+				if (comparison < 0)
+					low = index + 1;
+				else
+					hi = index - 1;
+			}
+
+			if (!isMatch) return -1;
+
+			for (var i = index - 1; i >= 0; --i)
+			{
+				itemRange = itemRangeFunc(segments[i]);
+				if (itemRange.IsEmpty) continue;
+				
+				if (itemRange.StartOffset < start && itemRange.EndOffset < start)
+				{
+					break;
+				}
+
+				if (itemRange.StartOffset > end && itemRange.EndOffset > end)
+				{
+					break;
+				}
+
+				// we have an earlier match...
+				index = i;
+			}
+
+			return index;
+		}
 	}
+
+
 	#endif
 }
