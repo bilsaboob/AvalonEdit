@@ -189,7 +189,7 @@ namespace ZenIDE.RSharp.Components.Editor
 		{
 			if (segment is INullSegment) return false;
 
-			if (!AddSegment(segment.Offset, segment.EndOffset, ref segment))
+			if (!AddSegment(segment.Offset, segment.Length, ref segment))
 				return false;
 
 			return true;
