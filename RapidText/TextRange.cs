@@ -15,12 +15,13 @@ namespace RapidText
     public struct TextRange : IEquatable<TextRange>
     {
         public static readonly TextRange Empty = new TextRange(0, 0);
+	    public static readonly TextRange Infinite = new TextRange(0, Int32.MaxValue);
 
-        /// <summary>
-        /// Should be replaced with <see cref="T:System.Nullable`1" /> of <see cref="T:JetBrains.Util.TextRange" /> wherever possible.
-        /// Avoid using in new code.
-        /// </summary>
-        public static readonly TextRange InvalidRange = new TextRange(-1, -1);
+		/// <summary>
+		/// Should be replaced with <see cref="T:System.Nullable`1" /> of <see cref="T:JetBrains.Util.TextRange" /> wherever possible.
+		/// Avoid using in new code.
+		/// </summary>
+		public static readonly TextRange InvalidRange = new TextRange(-1, -1);
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private int myStartOffset;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
